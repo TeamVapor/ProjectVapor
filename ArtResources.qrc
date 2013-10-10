@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>bookshelfshelf.png</file>
+        <file>bookshelftop.png</file>
+        <file>bookshelfbottom.png</file>
+    </qresource>
+</RCC>
