@@ -1,37 +1,158 @@
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 
-Rectangle {
+ZoomItem {
+
     //property alias bookshelfBG: bookshelfBG
     id: bookshelfMain
+
     property ListModel gamesList: GameList{  }
-
-    Image{
-        id: bookshelfTop
-        source:"qrc:/images/bookshelftop.png"
-        anchors.top: parent.top
-        height: (parent.height/11) * 1.229
-        width: parent.width
-    }
+    property var validIndexArray: []
+    property int shelfcount: 0
+    property int currentArrayIndex: 0
+    property int gamesPerRow: 16
+    property bool navigatingGames: false
+    height: parent.height
     Column{
-        anchors.top: bookshelfTop.bottom
-
+        anchors.bottom: parent.bottom
+        anchors.fill: parent
         Repeater{
-            model: 9
+            model: shelfcount
             Image{
+                id: shelfImage
                 width: bookshelfMain.width
-                height: (bookshelfMain.height- bookshelfTop.height)/10
+                height: bookshelfMain.height/shelfcount
                 source: "qrc:/images/bookshelfshelf.png"
-                ListView{
-
-                }
             }
+
         }
     }
-    Image{
-        id: bookshelfBottom
-        source:"qrc:/images/bookshelfbottom.png"
-        anchors.bottom: parent.bottom
-        height: (bookshelfMain.height- bookshelfTop.height)/10
-        width: parent.width
+    GridView
+    {
+        id: shelfGrid
+        model: gamesList
+        anchors.fill: parent
+        anchors.leftMargin: 16
+        anchors.topMargin: bookshelfMain.height/shelfcount *.08
+        anchors.rightMargin: 16
+        anchors.bottomMargin: 2
+        cellHeight: bookshelfMain.height/shelfcount
+        width: bookshelfMain.width *.75
+        cellWidth:width/gamesPerRow
+        height: bookshelfMain.height
+        highlight: Rectangle
+        {
+          width: shelfGrid.cellWidth
+          height: shelfGrid.cellHeight * .92
+          x: shelfGrid.currentItem.x
+          y: shelfGrid.currentItem.y
+          color: "transparent"
+          border.color: "yellow"
+          border.width: 2
+          z: shelfGrid.z + gamesList.count;
+          //Behavior on x{SmoothedAnimation{duration: 400}}
+          //Behavior on y{SmoothedAnimation{duration: 400}}
+        }
+
+        delegate: Gamecase{}
+        highlightRangeMode: GridView.StrictlyEnforceRange
+        Keys.onLeftPressed: {
+            event.accepted = true;
+            if(bookshelfMain.currentArrayIndex > 0)
+            {
+              //  console.log("index changing to:" + validIndexArray[currentArrayIndex -1]);
+                shelfGrid.currentIndex = validIndexArray[currentArrayIndex--];
+                shelfGrid.currentItem.focus = true;
+              //  console.log("displaytext" + displayText.text);
+                event.accepted = true;
+            }
+        }
+        Keys.onRightPressed:
+        {
+            event.accepted = true;
+            if(bookshelfMain.currentArrayIndex < bookshelfMain.validIndexArray.length)
+            {
+              //  console.log("index changing to:" + validIndexArray[currentArrayIndex +1]);
+                shelfGrid.currentIndex = validIndexArray[currentArrayIndex++];
+                shelfGrid.currentItem.focus = true;
+              //  console.log("displaytext" + displayText.text);
+                event.accepted = true;
+            }
+        }
+        Keys.onDownPressed:
+        {
+            event.accepted = true;
+            if(bookshelfMain.currentArrayIndex > 0)
+            {
+               // console.log("index changing to:" + validIndexArray[currentArrayIndex -1]);
+                shelfGrid.currentIndex = validIndexArray[currentArrayIndex--];
+                shelfGrid.currentItem.focus = true;
+               // console.log("displaytext" + displayText.text);
+                event.accepted = true;
+            }
+        }
+        Keys.onUpPressed:
+        {
+            event.accepted = true;
+            if(bookshelfMain.currentArrayIndex < bookshelfMain.validIndexArray.length)
+            {
+               // console.log("index changing to:" + validIndexArray[currentArrayIndex +1]);
+                shelfGrid.currentIndex = validIndexArray[currentArrayIndex++];
+                shelfGrid.currentItem.focus = true;
+               // console.log("displaytext" + displayText.text);
+                event.accepted = true;
+            }
+        }
+        Keys.onBackPressed:
+        {
+            shelfGrid.focus = false;
+            bookshelfMain.focus = true;
+        }
+
+        keyNavigationWraps: false
+        highlightFollowsCurrentItem: false
     }
+    Rectangle
+    {
+        id: highlight
+        anchors.fill: parent
+        color:"transparent"
+        border.color: "yellow"
+        border.width: 16
+        visible: bookshelfMain.focus
+
+    }
+    Keys.onPressed:
+    {
+        if (event.key == Qt.Key_Return) {
+            if(navigatingGames == false)
+            {
+                zoomsurface.zoomToItemTopRight(bookshelf)
+                shelfGrid.currentIndex = 0;
+                shelfGrid.focus = true;
+                bookshelfMain.focus = false;
+                navigatingGames = true;
+            }
+            else
+            {
+                shelfGrid.currentItem.start();
+            }
+
+            //highlight.visible = false;
+        }
+        else if(event.key == Qt.Key_Backspace) {
+            zoomsurface.zoomOut.start();
+            shelfGrid.focus = false;
+            bookshelfMain.focus = true;
+            navigatingGames = false;
+            shelfGrid.currentIndex = 0;
+        }
+        else if(event.key == Qt.Key_Left) {
+            bookshelfMain.focus = false;
+            monitor.focus = true;
+        }
+    }
+
+    transformOrigin: Item.TopLeft
+
 }

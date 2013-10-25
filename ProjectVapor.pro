@@ -25,3 +25,8 @@ RESOURCES += \
     ArtResources.qrc
 
 OTHER_FILES +=
+
+HEADERS += \
+    EmulatorLauncher.h
+
+CONFIG += c++11

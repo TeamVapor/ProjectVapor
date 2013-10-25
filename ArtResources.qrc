@@ -1,6 +1,12 @@
 <RCC>
     <qresource prefix="/images">
         <file>bookshelfshelf.png</file>
+        <file>wall_texture.jpg</file>
+        <file>desk.png</file>
+        <file>monitor.png</file>
+        <file>router.png</file>
+        <file>SuperMetroid.png</file>
+        <file>SuperMStars.png</file>
         <file>super_metroid.jpg</file>
     </qresource>
 </RCC>
