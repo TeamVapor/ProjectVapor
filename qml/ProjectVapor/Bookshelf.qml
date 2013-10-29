@@ -50,58 +50,28 @@ ZoomItem {
           border.color: "yellow"
           border.width: 2
           z: shelfGrid.z + gamesList.count;
-          //Behavior on x{SmoothedAnimation{duration: 400}}
-          //Behavior on y{SmoothedAnimation{duration: 400}}
         }
 
         delegate: Gamecase{}
         highlightRangeMode: GridView.StrictlyEnforceRange
         Keys.onLeftPressed: {
             event.accepted = true;
-            if(bookshelfMain.currentArrayIndex > 0)
-            {
-              //  console.log("index changing to:" + validIndexArray[currentArrayIndex -1]);
-                shelfGrid.currentIndex = validIndexArray[currentArrayIndex--];
-                shelfGrid.currentItem.focus = true;
-              //  console.log("displaytext" + displayText.text);
-                event.accepted = true;
-            }
+            moveSelectionLeft();
         }
         Keys.onRightPressed:
         {
             event.accepted = true;
-            if(bookshelfMain.currentArrayIndex < bookshelfMain.validIndexArray.length)
-            {
-              //  console.log("index changing to:" + validIndexArray[currentArrayIndex +1]);
-                shelfGrid.currentIndex = validIndexArray[currentArrayIndex++];
-                shelfGrid.currentItem.focus = true;
-              //  console.log("displaytext" + displayText.text);
-                event.accepted = true;
-            }
+            moveSelectionRight();
         }
         Keys.onDownPressed:
         {
             event.accepted = true;
-            if(bookshelfMain.currentArrayIndex > 0)
-            {
-               // console.log("index changing to:" + validIndexArray[currentArrayIndex -1]);
-                shelfGrid.currentIndex = validIndexArray[currentArrayIndex--];
-                shelfGrid.currentItem.focus = true;
-               // console.log("displaytext" + displayText.text);
-                event.accepted = true;
-            }
+            moveSelectionLeft();
         }
         Keys.onUpPressed:
         {
             event.accepted = true;
-            if(bookshelfMain.currentArrayIndex < bookshelfMain.validIndexArray.length)
-            {
-               // console.log("index changing to:" + validIndexArray[currentArrayIndex +1]);
-                shelfGrid.currentIndex = validIndexArray[currentArrayIndex++];
-                shelfGrid.currentItem.focus = true;
-               // console.log("displaytext" + displayText.text);
-                event.accepted = true;
-            }
+            moveSelectionRight();
         }
         Keys.onBackPressed:
         {
@@ -152,7 +122,22 @@ ZoomItem {
             monitor.focus = true;
         }
     }
+    function moveSelectionRight()
+    {
+        if(bookshelfMain.currentArrayIndex < bookshelfMain.validIndexArray.length)
+        {
+            shelfGrid.currentIndex = validIndexArray[++currentArrayIndex];
+            shelfGrid.currentItem.focus = true;
+        }
+    }
+    function moveSelectionLeft()
+    {
+        if(bookshelfMain.currentArrayIndex > 0)
+        {
+            shelfGrid.currentIndex = validIndexArray[--currentArrayIndex];
+            shelfGrid.currentItem.focus = true;
+        }
+    }
 
     transformOrigin: Item.TopLeft
-
 }

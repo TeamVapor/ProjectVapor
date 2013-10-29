@@ -9,7 +9,6 @@ ZoomItem
     width: 0 //parent.width
     height: 0 //parent.height
     color: "black"
-
     //sets up the theme of the current system
     SystemPalette { id: activePalette }
 
@@ -107,7 +106,12 @@ ZoomItem
             font.pointSize: 16
             wrapMode: TextEdit.Wrap
             focus: true
-            Keys.onReturnPressed: ChatHandler.messageInput();
+            Keys.onReturnPressed:
+            {
+                sipKeyboard.setInput(textInput);
+                sipKeyboard.visible = true;
+                sipKeyboard.focus = true;
+            }
 
             KeyNavigation.right: sendButton
             KeyNavigation.up: textInputArea

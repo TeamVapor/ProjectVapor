@@ -8,5 +8,6 @@
         <file>SuperMetroid.png</file>
         <file>SuperMStars.png</file>
         <file>super_metroid.jpg</file>
+        <file>dpad.png</file>
     </qresource>
 </RCC>

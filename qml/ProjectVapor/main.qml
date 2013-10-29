@@ -21,6 +21,12 @@ Rectangle {
     property int gamespershelfcount: 0
     color: "blue"
     scale: 1.0
+    SIPKeyboard
+    {
+        id:sipKeyboard
+        z: 100
+        visible: false
+    }
 
     Behavior on x
     {
@@ -39,6 +45,7 @@ Rectangle {
             alwaysRunToEnd: true
         }
     }
+
     Component.onCompleted:
     {
         // fill gameList from SQL database
