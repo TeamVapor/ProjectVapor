@@ -12,7 +12,7 @@ ZoomItem
     Keys.onEscapePressed:
     {
         //visible = false;
-        zoomsurface.zoomOut.start();
+        zoomsurface.zoomOutToFull();
     }
 
     Rectangle

@@ -53,7 +53,7 @@ Rectangle {
         calculateScreenSize();
         var zoomsurface_width = homeScreen.screenwidth * homeScreen.screenmultiplier;
         var zoomsurface_height = homeScreen.screenheight * homeScreen.screenmultiplier;
-        zoomsurface = ZoomSurface.createInstance(homeScreen,zoomsurface_width,zoomsurface_height,0,0, false);
+        zoomsurface = ZoomSurface.createInstance(homeScreen,ScreenWidth,ScreenHeight,zoomsurface_width,zoomsurface_height,0,0,false);
         zoomsurface.setBackgroundImage("qrc:/images/wall_texture.jpg");
         zoomsurface.backgroundImage.fillMode = Image.Tile;
         bookshelf = ZoomSurface.addItem(zoomsurface,"Bookshelf.qml",zoomsurface.width/4, zoomsurface_height,zoomsurface.width * .75 ,0);
@@ -86,7 +86,7 @@ Rectangle {
         poster = ZoomSurface.addItem(zoomsurface, "Poster.qml", screenwidth / 3, screenheight / 1.5, screenwidth * 0.2, screenheight * 0.2);
         poster.visible = true;
         zoomsurface.scaledOutValue = screenwidth/zoomsurface.width;
-        zoomsurface.zoomOut.start();
+        zoomsurface.zoomOutToFull();
     }
 
     // Functions used for calculating the start of the applications

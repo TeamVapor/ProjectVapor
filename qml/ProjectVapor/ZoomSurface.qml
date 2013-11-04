@@ -1,15 +1,28 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
 
+/*****************************************************************
+  ZoomSurface: Creates a zoomable surface area and
+  ultimately just provides controlled animations.
+ How-To Use: Create a ZoomSurface using the zoomablesurface.js
+  function 'createInstance'. After storing the instance of zoomSurface
+  add items and use the builtin zoom functions.
+  ****************************************************************/
+
 Rectangle {
     id:zoomsurface
-    property bool fit_fullscreen:false
-    property var screen:undefined
-    property bool zoomedIn: false
+    // Variables that control Zoom State and Animations
+    property bool zoomedIn: true
     property var targetItem:undefined
-    property alias zoomOut:zoomOut
-    property alias zoomOutFull:zoomOutFull
+    property real targetScale: 1
+    property int targetX: 0
+    property int targetY: 0
+    property int targetWidth: 0
+    property int targetHeight: 0
+    // Variables that define the 'Norm' for ZoomSurface
+    property bool fit_fullscreen:false
     property real scaledOutValue:1
+    property var screen:undefined
     property alias backgroundImage:image
     Image
     {
@@ -46,6 +59,31 @@ Rectangle {
         zoomToItemWithOffset.start();
     }
 
+
+    function zoomToAny(width,height,x,y)
+    {
+
+        targetItem = null;
+        if( height >= 1080 && width >= 1920)
+        {
+            targetScale = 1080/width;
+        }
+        targetX = -((x )*(targetScale/ zoomsurface.scale));
+        targetY = -( (y )*(targetScale/ zoomsurface.scale));
+        zoomToItemAnywhere.start();
+    }
+    function zoomToAnyCentered(width,height,x,y)
+    {
+
+        targetItem = null;
+        if( height >= 1080 && width >= 1920)
+        {
+            targetScale = 1080/width;
+        }
+        targetX = -((x )*   (targetScale/ zoomsurface.scale))+ 960;
+        targetY = -( (y )* (targetScale/ zoomsurface.scale))+ 540;
+        zoomToItemAnywhere.start();
+    }
     function zoomToItemFull(item)
     {
         targetItem = item;
@@ -61,6 +99,7 @@ Rectangle {
         }
     }
 
+
     function zoomToFullWidthTop(item)
     {
         targetItem = item;
@@ -69,6 +108,16 @@ Rectangle {
         zoomToItemWithOffset.start();
         item.width = ScreenWidth;
     }
+    function zoomOut()
+    {
+        zoomOutAnimation.start();
+    }
+
+    function zoomOutToFull()
+    {
+        zoomOutFull.start();
+    }
+
     transformOrigin: Item.TopLeft
     SequentialAnimation{
 
@@ -115,7 +164,7 @@ Rectangle {
     }
 
     ParallelAnimation{
-        id: zoomOut
+        id: zoomOutAnimation
         PropertyAnimation{
             target: zoomsurface
             easing.type: Easing.InOutCirc
@@ -144,21 +193,26 @@ Rectangle {
         onStopped:
         {
            zoomsurface.zoomedIn = false;
-           zoomsurface.targetItem.onZoomedOutStopped();
+            if(zoomsurface.targetItem)
+            {
+                    zoomsurface.targetItem.onZoomedOutStopped();
+            }
         }
     }
     ParallelAnimation{
         id: zoomInItemFull
+        running: false
         onStarted:
         {
-            zoomsurface.targetItem.onStartZoomInFull();
-          //  stretchToFullW.start();
-          //  stretchToFullH.start();
+            if(zoomsurface.targetItem)
+            {
+                zoomsurface.targetItem.onStartZoomInFull();
+            }
         }
 
         PropertyAnimation{
             target: zoomsurface
-            easing.type: Easing.bezierCurve
+            easing.type: Easing.InCirc
             properties: "scale"
             to: 1.0
             duration: 600
@@ -167,7 +221,7 @@ Rectangle {
             id: moveXFull
             target: zoomsurface
             properties: "x"
-            to: -zoomsurface.targetItem.x
+            to:  zoomsurface.targetItem ? -zoomsurface.targetItem.x:0
             duration: 600
             running: false
         }
@@ -175,7 +229,7 @@ Rectangle {
             id: moveYFull
             target: zoomsurface
             properties: "y"
-            to: -zoomsurface.targetItem.y
+            to:  zoomsurface.targetItem ? -zoomsurface.targetItem.y:0
             duration:600
             running: false
         }
@@ -184,15 +238,11 @@ Rectangle {
         {
             zoomsurface.zoomedIn = true;
             zoomsurface.fit_fullscreen = true;
-            console.log("Zoomsurface.x: " +  zoomsurface.x);
-            console.log("Zoomsurface.y: " +  zoomsurface.y);
-            console.log("targetitem.x: " +  zoomsurface.targetItem.x);
-            console.log("targetitem.y: " +  zoomsurface.targetItem.y);
         }
     }
     PropertyAnimation {
         id: stretchToFullW
-        target: zoomsurface.targetItem
+        target: zoomsurface.targetItem ?  zoomsurface.targetItem:null
         properties: "width"
         to: zoomsurface.parent.width
         duration:300
@@ -200,7 +250,7 @@ Rectangle {
     }
     PropertyAnimation{
         id: stretchToFullH
-        target: zoomsurface.targetItem
+        target: zoomsurface.targetItem ?  zoomsurface.targetItem:null
         properties: "height"
         to: zoomsurface.parent.height
         duration:300
@@ -236,17 +286,17 @@ Rectangle {
         }
         PropertyAnimation {
             id: stretchToOrigW
-            target: zoomsurface.targetItem
+            target: zoomsurface.targetItem ?  zoomsurface.targetItem:null
             properties: "width"
-            to: zoomsurface.targetItem.orig_w
+            to:  zoomsurface.targetItem ? zoomsurface.targetItem.orig_w:0
             duration:600
         }
         PropertyAnimation{
             id: stretchToOrigH
             running: false
-            target: zoomsurface.targetItem
+            target: zoomsurface.targetItem ?  zoomsurface.targetItem:null
             properties: "height"
-            to: zoomsurface.targetItem.orig_h
+            to:  zoomsurface.targetItem ? zoomsurface.targetItem.orig_h:0
             duration:600
 
         }
@@ -255,6 +305,12 @@ Rectangle {
         {
             zoomsurface.zoomedIn = false;
             zoomsurface.fit_fullscreen = false;
+            if(zoomsurface.targetItem)
+            {
+
+                zoomsurface.targetItem.onZoomedOutStopped();
+
+            }
         }
     }
 
@@ -281,7 +337,7 @@ Rectangle {
             easing.type: Easing.InQuart
             target: zoomsurface
             properties: "x"
-            to: -(zoomsurface.targetItem.x +zoomToItemWithOffset.xOffset)
+            to:  zoomsurface.targetItem ? -(zoomsurface.targetItem.x +zoomToItemWithOffset.xOffset):0
             duration: 600
             running: false
         }
@@ -289,7 +345,7 @@ Rectangle {
             easing.type: Easing.InQuart
             target: zoomsurface
             properties: "y"
-            to: -(zoomsurface.targetItem.y + zoomToItemWithOffset.yOffset)
+            to: zoomsurface.targetItem ? -(zoomsurface.targetItem.y + zoomToItemWithOffset.yOffset):0
             duration:600
             running: false
         }
@@ -302,9 +358,50 @@ Rectangle {
     }
 
 
+    ParallelAnimation{
+        id: zoomToItemAnywhere
+        running: false
+        onStarted:
+        {
+            if(zoomsurface.targetItem)
+            {
+                zoomsurface.targetItem.onZoomedInAnywhere();
+            }
+        }
 
-
-
+        PropertyAnimation{
+            target: zoomsurface
+            easing.type: Easing.InOutCirc
+            properties: "scale"
+            to: targetScale
+            duration: 600
+        }
+        PropertyAnimation{
+            easing.type: Easing.InQuart
+            target: zoomsurface
+            properties: "x"
+            to: targetX
+            duration: 600
+            running: false
+        }
+        PropertyAnimation{
+            easing.type: Easing.InQuart
+            target: zoomsurface
+            properties: "y"
+            to: targetY
+            duration:600
+            running: false
+        }
+        onStopped:
+        {
+            zoomsurface.zoomedIn = true;
+            zoomsurface.fit_fullscreen = false;
+            if(zoomsurface.targetItem)
+            {
+                zoomsurface.targetItem.onZoomedInStopped();
+            }
+        }
+    }
 
 }
 

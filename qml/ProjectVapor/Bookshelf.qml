@@ -111,7 +111,7 @@ ZoomItem {
             //highlight.visible = false;
         }
         else if(event.key == Qt.Key_Backspace) {
-            zoomsurface.zoomOut.start();
+            zoomsurface.zoomOutToFull();
             shelfGrid.focus = false;
             bookshelfMain.focus = true;
             navigatingGames = false;

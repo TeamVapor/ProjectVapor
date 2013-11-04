@@ -27,7 +27,7 @@ ZoomItem {
         }
         else if(event.key == Qt.Key_Backspace)
         {
-            zoomsurface.zoomOut.start();
+            zoomsurface.zoomOutToFull();
         }
         else if(event.key == Qt.Key_Right)
         {

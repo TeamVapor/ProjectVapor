@@ -320,7 +320,7 @@ ZoomItem
                 {
                     buttonArea.backButtonPressed = true;
                     chatScreen.visible = false;
-                    zoomsurface.zoomOut.start();
+                    zoomsurface.zoomOutToFull();
                     /*zoomsurface.scale = zoomsurface.scaledZoomValue;
                     zoomsurface.x = 0;
                     zoomsurface.y = 0;*/

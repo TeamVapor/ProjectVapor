@@ -21,4 +21,8 @@ Rectangle {
     {
 
     }
+    property var onZoomedInAnywhere: function()
+    {
+
+    }
 }

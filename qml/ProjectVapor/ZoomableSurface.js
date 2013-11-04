@@ -1,5 +1,5 @@
 //CTOR
-function createInstance(parent,base_width,base_height,x,y, fit_fullscreen)
+function createInstance(parent,screen_width,screen_height,base_width,base_height,x,y, fit_fullscreen)
 {
     var component = Qt.createComponent("ZoomSurface.qml");
     var surface = component.createObject(parent);
@@ -8,6 +8,8 @@ function createInstance(parent,base_width,base_height,x,y, fit_fullscreen)
     surface.fit_fullscreen = fit_fullscreen;
     surface.x = x;
     surface.y = y;
+    surface.scaledOutValue = screen_width/base_width;
+    surface.scale = 1;
     return surface;
 }
 var zoom_item = null;
