@@ -12,7 +12,12 @@ QML_IMPORT_PATH =
 # MOBILITY +=
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    qnsdmanager.cpp \
+    Bonjour/bonjourserviceresolver.cpp \
+    Bonjour/bonjourserviceregister.cpp \
+    Bonjour/bonjourservicebrowser.cpp \
+    vaporarcadensd.cpp
 
 # Installation path
 # target.path =
@@ -27,6 +32,15 @@ RESOURCES += \
 OTHER_FILES +=
 
 HEADERS += \
-    EmulatorLauncher.h
+    EmulatorLauncher.h \
+    qnsdmanager.h \
+    Bonjour/bonjourserviceresolver.h \
+    Bonjour/bonjourserviceregister.h \
+    Bonjour/bonjourservicebrowser.h \
+    Bonjour/bonjourrecord.h \
+    vaporarcadensd.h
 
 CONFIG += c++11
+
+
+LIBS+=-ldns_sd

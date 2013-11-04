@@ -287,7 +287,8 @@ ZoomItem
                 {
                     buttonArea.backButtonPressed = false;
                     chatScreen.visible = false;
-                    zoomsurface.zoomOut.start();
+                    zoomsurface.zoomOutToFull();
+                    NSDServices.startGameLobby("Tpimps Game Lobby");
                 }
                 focus: false
 

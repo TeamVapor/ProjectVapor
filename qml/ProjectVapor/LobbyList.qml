@@ -7,15 +7,6 @@ Rectangle
     //define open lobby list container look
     color: "gray"
 
-    ListModel
-    {
-        id: lobbyListModel
-
-        ListElement
-        {
-            lobbyName: "LobbyName"
-        }
-    }
 
     Component
     {
@@ -41,6 +32,7 @@ Rectangle
                 Text
                 {
                     id: lobbyBlockText
+                    property string lobbyName:NSDGameLobbyList[index]
                     anchors.centerIn: lobbyBlock
                     font.pixelSize: lobbyBlock.height < lobbyBlock.width ? lobbyBlock.width / lobbyName.length : lobbyBlock.height / lobbyName.length
                     color: "gold"
@@ -53,7 +45,7 @@ Rectangle
     ListView
     {
         id: lobbyList
-        model: lobbyListModel
+        model: NSDGameLobbyList
         delegate: lobbyDelegate
         anchors.fill: parent
         clip: true
