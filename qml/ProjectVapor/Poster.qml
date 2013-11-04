@@ -13,6 +13,9 @@ ZoomItem
     KeyNavigation.right: router
     KeyNavigation.left: bookshelf
 
+    glowOpacity: 0.25
+    glowZ: posterContainer.z - 50
+
     EmulatorLauncher
     {
         id:emuLauncher
@@ -25,18 +28,6 @@ ZoomItem
         focus: false
         source: "qrc:/images/super_metroid.jpg"
         Keys.onReturnPressed: emuLauncher.start();
-    }
-
-    Rectangle
-    {
-        id: posterSelected
-        width: parent.width
-        height: parent.height
-        color: "transparent"
-        border.width: 6
-        border.color: "gold"
-        visible: parent.focus
-        radius: 8
     }
 
     Keys.onPressed:

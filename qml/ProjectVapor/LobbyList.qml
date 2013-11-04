@@ -1,13 +1,27 @@
 import QtQuick 2.0
 
-Rectangle
+VaporRectangle
 {
     id: lobbyListContainer
+    color: alternateBase
+    focus: false
+    pressable: false
 
-    //define open lobby list container look
-    color: "gray"
+/*
+    //defines the data within the list
+    ListModel
+    {
+        id: lobbyListModel
+
+        ListElement
+        {
+            lobbyName: "LobbyName"
+        }
+    }*/
 
 
+    //defines how the data from list model
+    //is displayed from the list view
     Component
     {
         id: lobbyDelegate
@@ -15,33 +29,34 @@ Rectangle
         Column
         {
             spacing: 3
-            Rectangle
+            VaporRectangle
             {
                 id: lobbyBlock
-                width: lobbyListContainer.width
+                width: lobbyListContainer.width - scrollbar.width
                 height: lobbyListContainer.height / 5.3
                 focus: false
                 gradient: Gradient
                 {
-                    GradientStop { position: 0.0; color: "blue" }
-                    GradientStop { position: 1.0; color: "darkblue" }
+                    GradientStop { position: 0.00; color: "#394053"; }
+                    GradientStop { position: 1.00; color: lobbyBlock.dark; }
                 }
-                radius: 10
                 border.width: 3
-                border.color: "blue"
+                border.color: lobbyBlock.light
                 Text
                 {
                     id: lobbyBlockText
-                    property string lobbyName:NSDGameLobbyList[index]
+                    property string lobbyName: NSDGameLobbyList[index]
                     anchors.centerIn: lobbyBlock
                     font.pixelSize: lobbyBlock.height < lobbyBlock.width ? lobbyBlock.width / lobbyName.length : lobbyBlock.height / lobbyName.length
-                    color: "gold"
+                    color: "black"
                     text: lobbyName
                 }
             }
         }
     }
 
+    //manages the list model and delegate
+    //as well as contains its scrollbar
     ListView
     {
         id: lobbyList
@@ -57,16 +72,16 @@ Rectangle
             y: parent.visibleArea.yPosition * parent.height
             width: 10
             height: parent.visibleArea.heightRatio * parent.height
-            color: "black"
-            radius: 10
+            color: "#2b3c58"
+            clip: true
         }
     }
 
-    Keys.onPressed:
+    /*Keys.onPressed:
     {
         if (event.key == Qt.Key_Return)
             lobbyListModel.append({"lobbyName": "TeamVapor Lobby"});
         else if (event.key == Qt.Key_X)
             lobbyListModel.remove({"lobbyName": "TeamVapor Lobby"});
-    }
+    }*/
 }

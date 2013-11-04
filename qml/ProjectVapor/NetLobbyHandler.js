@@ -11,9 +11,9 @@ function messageInput()
 
     if (messageText != "")
     {
-        chatText.insert(0, jacksTag.toString());
-        chatText.insert(jacksTag.length, messageText.toString());
-        chatText.insert(jacksTag.length + messageText.length, "\n");
+        textContainer.insert(0, jacksTag.toString());
+        textContainer.insert(jacksTag.length, messageText.toString());
+        textContainer.insert(jacksTag.length + messageText.length, "\n");
         textInput.text = "";
     }
 }

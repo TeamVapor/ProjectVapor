@@ -6,19 +6,10 @@ ZoomItem {
     id:monitor
     height: 0
     focus: false
-    Glow
-    {
-        anchors.centerIn: monitor
-        color: "yellow"
-        width: monitor.width *1.01
-        height: monitor.height *1.01
-        source:image
-        samples:10
-        radius: 8
-        spread: 1.0
-        visible: monitor.focus
-        enabled: monitor.focus
-    }
+
+    glowOpacity: 0.25
+    glowZ: monitor.z - 50
+
     Keys.onPressed:
     {
         if (event.key == Qt.Key_Return)

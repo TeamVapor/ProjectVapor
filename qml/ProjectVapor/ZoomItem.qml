@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Rectangle {
+VaporRectangle {
     property int orig_w:0
     property int orig_h:0
     transformOrigin: Item.TopLeft

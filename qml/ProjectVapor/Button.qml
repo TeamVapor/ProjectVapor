@@ -1,31 +1,26 @@
 import QtQuick 2.0
 
-Rectangle
+VaporRectangle
 {
     id: button
     property string text: ""
-//    property real fontSize: parent.width / 32
-
     signal clicked
-
-
-    border { width: 1; color: Qt.darker(activePalette.button) }
-    antialiasing: true
-    radius: 8
-
     gradient: Gradient
     {
-        GradientStop { position: 0.0;
-                        color:
-                        {
-                            if (mouseArea.pressed)
-                                return activePalette.dark
-                            else
-                                return activePalette.light
-                        }
-                      }
-        GradientStop { position: 1.0; color: activePalette.button }
+        GradientStop { position: 0.00;
+            color:
+            {
+                if (mouseArea.pressed)
+                    return "lightsteelblue"
+                else
+                    return "#56699e"
+            }
+        }
+        GradientStop { position: 1.00; color: "#3e4364"; }
     }
+    border.width: 3
+    border.color: "#3e4b8d"
+    antialiasing: true
 
     MouseArea
     {
@@ -40,7 +35,7 @@ Rectangle
     {
         id: buttonLabel
         anchors.centerIn: button
-        color: activePalette.buttonText
+        color: "black"
         font.pixelSize: button.width / 8
         text: button.text
     }

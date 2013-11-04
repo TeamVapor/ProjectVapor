@@ -1,13 +1,23 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import './NetLobbyHandler.js' as Handler
 
 
-Rectangle
+VaporRectangle
 {
     id: userListContainer
-    color: "gray"
+    color: alternateBase
+    focus: false
+    pressable: false
 
+    /*ListModel
+    {
+        id: userModel
+
+        ListElement
+        {
+            userName: "Default"
+        }
+    }*/
 
     //dynamic user element
     Component
@@ -15,34 +25,34 @@ Rectangle
         //holds user data properties
         id: userDelegate
 
-
-
-        Rectangle
+        Column
         {
-            id: userBlock
-            width: userListContainer.width - scrollbar.width
-            height: userListContainer.height / 5.3
-            focus: false
-            gradient: Gradient
+            spacing: 3
+            VaporRectangle
             {
-            GradientStop { position: 0.0; color: "lightgreen" }
-            GradientStop { position: 1.0; color: "darkgreen"  }
+                id: userBlock
+                width: userListContainer.width - scrollbar.width
+                height: userListContainer.height / 5.3
+                focus: false
+                gradient: Gradient
+                {
+                    GradientStop { position: 0.00; color: "#394053"; }
+                    GradientStop { position: 1.00; color: "#3a4858"; }
+                }
+                border.width: 3
+                border.color: "#b3ccee"
+                Text
+                {
+                    id: userBlockText
+                    property string userName: NSDUserList[index]
+                    anchors.centerIn: userBlock
+                    font.pixelSize: userBlock.height < userBlock.width ? userBlock.width / userName.length : userBlock.height / userName.length
+                    color: "black"
+                    text: userName
+                }
+                opacity: 1.0
+            }
         }
-        radius: 10
-        border.width: 3
-        border.color: "green"
-        Text
-        {
-            id: userBlockText
-            property string userName: NSDUserList[index]
-            anchors.centerIn: userBlock
-            font.pixelSize: userBlock.height < userBlock.width ? userBlock.width / userName.length : userBlock.height / userName.length
-            color: "gold"
-            text: userName
-        }
-        opacity: 1.0
-    }
-
     }
 
     ListView
@@ -51,6 +61,8 @@ Rectangle
         model: NSDUserList ? NSDUserList:0
         delegate: userDelegate
         anchors.fill: parent
+        focus: false
+
         Rectangle
         {
             id: scrollbar
@@ -58,13 +70,11 @@ Rectangle
             y: parent.visibleArea.yPosition * parent.height
             width: 10
             height: parent.visibleArea.heightRatio * parent.height
-            color: "black"
-            radius: 10
+            color: "#2b3c58"
         }
-
     }
 
-    Keys.onPressed:
+    /*Keys.onPressed:
     {
         if (event.key == Qt.Key_Return)
         {
@@ -74,6 +84,5 @@ Rectangle
         {
             userModel.remove({"userName": "Darth Vader"});
         }
-    }
-
+    }*/
 }

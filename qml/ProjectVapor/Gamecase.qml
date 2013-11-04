@@ -1,7 +1,7 @@
 import QtQuick 2.0
 Component{
     id : wrapper
-    Rectangle{
+    VaporRectangle{
         property alias text: displayText
         id: gameCase
         color: "blue"

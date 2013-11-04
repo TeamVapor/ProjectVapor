@@ -12,6 +12,9 @@ ZoomItem {
     property int currentArrayIndex: 0
     property int gamesPerRow: 16
     property bool navigatingGames: false
+
+    glowZ: -50
+
     height: parent.height
     Column{
         anchors.bottom: parent.bottom
@@ -40,17 +43,6 @@ ZoomItem {
         width: bookshelfMain.width *.75
         cellWidth:width/gamesPerRow
         height: bookshelfMain.height
-        highlight: Rectangle
-        {
-          width: shelfGrid.cellWidth
-          height: shelfGrid.cellHeight * .92
-          x: shelfGrid.currentItem.x
-          y: shelfGrid.currentItem.y
-          color: "transparent"
-          border.color: "yellow"
-          border.width: 2
-          z: shelfGrid.z + gamesList.count;
-        }
 
         delegate: Gamecase{}
         highlightRangeMode: GridView.StrictlyEnforceRange
@@ -82,16 +74,6 @@ ZoomItem {
         keyNavigationWraps: false
         highlightFollowsCurrentItem: false
     }
-    Rectangle
-    {
-        id: highlight
-        anchors.fill: parent
-        color:"transparent"
-        border.color: "yellow"
-        border.width: 16
-        visible: bookshelfMain.focus
-
-    }
     Keys.onPressed:
     {
         if (event.key == Qt.Key_Return) {
@@ -107,8 +89,6 @@ ZoomItem {
             {
                 shelfGrid.currentItem.start();
             }
-
-            //highlight.visible = false;
         }
         else if(event.key == Qt.Key_Backspace) {
             zoomsurface.zoomOutToFull();

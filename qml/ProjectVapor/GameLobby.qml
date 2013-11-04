@@ -3,7 +3,7 @@ import './NetLobbyHandler.js' as Handler
 
 ZoomItem
 {
-    id: netLobbyContainer
+    id: gameLobbyContainer
     width: 1920 //width: 0 //parent.width
     height: 1080 //height: 0 //parent.height
     visible: false
@@ -29,7 +29,7 @@ ZoomItem
         KeyNavigation.up: lobbyListContainer
         KeyNavigation.down: lobbyListContainer
         KeyNavigation.right: textAreaContainer
-        KeyNavigation.left: settingsButtons
+        KeyNavigation.left: vaporVideo
 
         UserList
         {
@@ -54,7 +54,6 @@ ZoomItem
         KeyNavigation.up: userListContainer
         KeyNavigation.down: userListContainer
         KeyNavigation.right: textInputContainer
-        KeyNavigation.left: backButton
 
         LobbyList
         {
@@ -66,23 +65,58 @@ ZoomItem
         }
     }//end lobby list area
 
+    //begin game banner area
+    VaporRectangle
+    {
+        id: gameBannerContainer
+        width: parent.width * 0.5
+        height: parent.height * 0.2
+        color: "transparent"
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        pressable: false
+
+        VaporRectangle
+        {
+            id: gameBanner
+            width: parent.width * 0.95
+            height: parent.height * 0.95
+            color: shadow
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            KeyNavigation.left: userList
+            KeyNavigation.down: textAreaContainer
+            KeyNavigation.up: textInputContainer
+            KeyNavigation.right: vaporVideo
+
+            Image
+            {
+                id: bannerImage
+                width: parent.width
+                height: parent.height
+                fillMode: Image.PreserveAspectFit
+                source: "/home/jack/Desktop/NetLobbyandGameLobbyRefactor/tmnt_banner.png"
+            }
+        }
+    }//end game banner area
+
     //begin text area
     VaporRectangle
     {
         id: textAreaContainer
         width: parent.width * 0.5
-        height: parent.height * 0.8
-        anchors.top: parent.top
+        height: parent.height * 0.6
+        anchors.bottom: textInputContainer.top
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
         pressable: false
 
         //perhaps allow selection later for text grabbing, etc.. from group chat?
 
-        KeyNavigation.up: textInputContainer
+        KeyNavigation.up: gameBanner
         KeyNavigation.down: textInputContainer
-        KeyNavigation.left: userListContainer
-        KeyNavigation.right: settingsButtons
+        KeyNavigation.left: userList
+        KeyNavigation.right: vaporVideo
 
         VaporRectangle
         {
@@ -122,6 +156,8 @@ ZoomItem
 
         KeyNavigation.up: textAreaContainer
         KeyNavigation.left: lobbyList
+        KeyNavigation.down: gameBanner
+        KeyNavigation.right: playButton
 
         Keys.onReturnPressed:
         {
@@ -218,104 +254,37 @@ ZoomItem
         }//end send button
     }//end text input area
 
-    //begin settings area
     VaporRectangle
     {
-        id: settingsAreaContainer
+        id: videoContainer
         width: parent.width * 0.25
-        height: parent.height * 0.15
+        height: parent.height * 0.45
         anchors.top: parent.top
         anchors.right: parent.right
-        pressable: false
         color: "transparent"
+        pressable: false
 
-        VaporRectangle
+        VaporVideoPlayer
         {
-            id: settingsButtons
+            id: vaporVideo
             width: parent.width * 0.95
-            height: parent.height * 0.5
+            height: parent.height * 0.95
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            color: base
-            pressable: false
+            color: "transparent"
 
-            KeyNavigation.left: textAreaContainer
+            KeyNavigation.left: gameBanner
             KeyNavigation.right: userList
+            KeyNavigation.up: backButton
+            KeyNavigation.down: playButton
 
             Keys.onReturnPressed:
             {
-                settingsButtons.focus = false;
-                fontButton.focus = true;
+                vaporVideo.source = vaporVideo.swapSource();
                 event.accepted = true;
             }
-
-            //place holder buttons
-            Button
-            {
-                id: fontButton
-                width: parent.width * 0.2
-                height: parent.height
-                anchors.left: parent.left
-                text: "Font"
-                KeyNavigation.right: sizeButton
-                KeyNavigation.left: clearChatButton
-                KeyNavigation.up: backButton
-                KeyNavigation.down: playButton
-            }
-            Button
-            {
-                id: sizeButton
-                width: parent.width * 0.2
-                height: parent.height
-                anchors.left: fontButton.right
-                text: "Size"
-                KeyNavigation.right: fontColorButton
-                KeyNavigation.left: fontButton
-                KeyNavigation.up: backButton
-                KeyNavigation.down: playButton
-            }
-            Button
-            {
-                id: fontColorButton
-                width: parent.width * 0.2
-                height: parent.height
-                anchors.left: sizeButton.right
-                text: "Color"
-                KeyNavigation.right: setUserNameButton
-                KeyNavigation.left: sizeButton
-                KeyNavigation.up: backButton
-                KeyNavigation.down: playButton
-            }
-            Button
-            {
-                id: setUserNameButton
-                width: parent.width * 0.2
-                height: parent.height
-                anchors.left: fontColorButton.right
-                text: "UserName"
-                KeyNavigation.right: clearChatButton
-                KeyNavigation.left: fontColorButton
-                KeyNavigation.up: backButton
-                KeyNavigation.down: playButton
-            }
-            Button
-            {
-                id: clearChatButton
-                width: parent.width * 0.2
-                height: parent.height
-                anchors.left: setUserNameButton.right
-                text: "ClearChat"
-                KeyNavigation.right: fontButton
-                KeyNavigation.left: setUserNameButton
-                KeyNavigation.up: backButton
-                KeyNavigation.down: playButton
-            }
-            //end place holder buttons
         }
-    }//end settings area
-
-    //need to define something for file share
-    //between the top buttons and bottom buttons
+    }
 
     //application navigation buttons
     VaporRectangle
@@ -345,21 +314,18 @@ ZoomItem
                 height: parent.height * 0.95
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Play Game"
+                text: "Start Game"
 
                 //need to reset these once center piece of
                 //right hand screen is determined
-                KeyNavigation.up: settingsButtons
+                KeyNavigation.up: vaporVideo
                 KeyNavigation.down: backButton
                 KeyNavigation.left: textInputContainer
                 KeyNavigation.right: lobbyList
 
                 onClicked:
                 {
-                    navigationButtonContainer.backButtonPressed = false;
-                    netLobbyContainer.visible = false;
-                    zoomsurface.zoomOutToFull();
-                    NSDServices.startGameLobby("Vapor Lobby");
+                    //start selected game
                 }
             }
         }
@@ -382,17 +348,15 @@ ZoomItem
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Back Home"
 
-                //need to reset these once center piece of
-                //right hand screen is determined
                 KeyNavigation.up: playButton
-                KeyNavigation.down: settingsButtons
+                KeyNavigation.down: vaporVideo
                 KeyNavigation.left: textInputContainer
                 KeyNavigation.right: lobbyList
 
                 onClicked:
                 {
                     navigationButtonContainer.backButtonPressed = true;
-                    netLobbyContainer.visible = false;
+                    gameLobbyContainer.visible = false;
                     zoomsurface.zoomOutToFull();
                     router.focus = true;
                 }
@@ -408,8 +372,7 @@ ZoomItem
         }
         else
         {
-            zoomsurface.zoomToItemTopRight(bookshelf);
-            bookshelf.focus = true;
+            //start game animation
         }
     }
 }

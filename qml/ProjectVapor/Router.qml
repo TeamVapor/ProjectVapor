@@ -9,7 +9,10 @@ ZoomItem {
 
     KeyNavigation.left: poster
 
-    Glow
+    glowOpacity: 0.25
+    glowZ: -10000
+
+    /*Glow
     {
         anchors.centerIn: router
         color: "yellow"
@@ -21,7 +24,7 @@ ZoomItem {
         spread: 1.0
         visible: router.focus
         enabled: router.focus
-    }
+    }*/
     Keys.onPressed:
     {
         if (event.key == Qt.Key_Return) {

@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     vpnsd.setContext(viewer.rootContext());
     qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
-   // viewer.showFullScreen();
-    viewer.showExpanded();
+    viewer.showFullScreen();
+    //viewer.showExpanded();
     return app.exec();
 }
