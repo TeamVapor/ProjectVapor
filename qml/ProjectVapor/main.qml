@@ -70,8 +70,8 @@ Rectangle {
         zoomsurface.color = "blue";
         monitor = ZoomSurface.addItem(zoomsurface,"Monitor.qml",desk.width * .6,zoomsurface.height/4,desk.x + (desk.width * .20),zoomsurface.height/4);
         monitor.anchors.bottom = desk.top;
-        bookshelf.focus  =false;
-        monitor.focus  =true;
+        bookshelf.focus = false;
+        monitor.focus = true;
         router = ZoomSurface.addItem(zoomsurface, "Router.qml",desk.width/4, monitor.height/5,desk.x+4, desk.y - (monitor.height/5));
         router.anchors.bottom = desk.top;
         router.anchors.bottomMargin = -2;

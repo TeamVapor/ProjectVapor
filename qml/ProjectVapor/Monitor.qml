@@ -9,6 +9,7 @@ ZoomItem {
 
     glowOpacity: 0.25
     glowZ: monitor.z - 50
+    scalable: false
 
     Keys.onPressed:
     {

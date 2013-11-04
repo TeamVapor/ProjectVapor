@@ -11,6 +11,7 @@ ZoomItem {
 
     glowOpacity: 0.25
     glowZ: -10000
+    scalable: false
 
     /*Glow
     {

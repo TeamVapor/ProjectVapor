@@ -15,6 +15,7 @@ ZoomItem
 
     glowOpacity: 0.25
     glowZ: posterContainer.z - 50
+    scalable: false
 
     EmulatorLauncher
     {

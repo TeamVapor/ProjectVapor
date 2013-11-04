@@ -14,6 +14,7 @@ ZoomItem {
     property bool navigatingGames: false
 
     glowZ: -50
+    scalable: false
 
     height: parent.height
     Column{
