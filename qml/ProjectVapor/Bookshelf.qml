@@ -37,6 +37,7 @@ ZoomItem {
         model: gamesList
         anchors.fill: parent
         anchors.leftMargin: 16
+        currentIndex: -1
         anchors.topMargin: bookshelfMain.height/shelfcount *.08
         anchors.rightMargin: 16
         anchors.bottomMargin: 2
@@ -44,36 +45,54 @@ ZoomItem {
         width: bookshelfMain.width *.75
         cellWidth:width/gamesPerRow
         height: bookshelfMain.height
-
+        contentWidth: width
+        contentHeight: height
+        interactive: false
         delegate: Gamecase{}
         highlightRangeMode: GridView.StrictlyEnforceRange
+        highlightFollowsCurrentItem:  false
+        keyNavigationWraps: true
+        onCurrentItemChanged: {
+            if(currentItem)
+            {
+                var currenty = currentItem.mapToItem(null,0,0).y;
+                if(currenty < 0)
+                {
+                    zoomsurface.moveto(zoomsurface.x,(zoomsurface.y -currenty) );
+                }
+                else if(currenty+cellHeight >= ScreenHeight)
+                {
+                    zoomsurface.moveto(zoomsurface.x,zoomsurface.y + (ScreenHeight - (currenty + currentItem.height)));
+                }
+            }
+        }
+
         Keys.onLeftPressed: {
             event.accepted = true;
-            moveSelectionLeft();
+            moveCurrentIndexLeft();
+
         }
         Keys.onRightPressed:
         {
             event.accepted = true;
-            moveSelectionRight();
+            moveCurrentIndexRight();
         }
         Keys.onDownPressed:
         {
             event.accepted = true;
-            moveSelectionLeft();
+            moveCurrentIndexDown();
         }
         Keys.onUpPressed:
         {
             event.accepted = true;
-            moveSelectionRight();
+            moveCurrentIndexUp();
         }
         Keys.onBackPressed:
         {
             shelfGrid.focus = false;
             bookshelfMain.focus = true;
+            currentIndex = -1;
         }
-
-        keyNavigationWraps: false
-        highlightFollowsCurrentItem: false
     }
     Keys.onPressed:
     {
@@ -93,32 +112,16 @@ ZoomItem {
         }
         else if(event.key == Qt.Key_Backspace) {
             zoomsurface.zoomOutToFull();
+            shelfGrid.currentItem.focus = false;
             shelfGrid.focus = false;
             bookshelfMain.focus = true;
             navigatingGames = false;
-            shelfGrid.currentIndex = 0;
+            shelfGrid.currentIndex = -1;
         }
         else if(event.key == Qt.Key_Left) {
             bookshelfMain.focus = false;
             monitor.focus = true;
         }
     }
-    function moveSelectionRight()
-    {
-        if(bookshelfMain.currentArrayIndex < bookshelfMain.validIndexArray.length)
-        {
-            shelfGrid.currentIndex = validIndexArray[++currentArrayIndex];
-            shelfGrid.currentItem.focus = true;
-        }
-    }
-    function moveSelectionLeft()
-    {
-        if(bookshelfMain.currentArrayIndex > 0)
-        {
-            shelfGrid.currentIndex = validIndexArray[--currentArrayIndex];
-            shelfGrid.currentItem.focus = true;
-        }
-    }
-
     transformOrigin: Item.TopLeft
 }

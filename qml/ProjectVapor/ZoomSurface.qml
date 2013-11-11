@@ -30,6 +30,14 @@ Rectangle {
         anchors.fill: parent
         visible: false
     }
+    function moveto(x,y)
+    {
+        targetX = x;
+        targetY = y;
+        targetItem = null;
+        zoomToItemAnywhere.start();
+    }
+
     function setBackgroundImage(img_path)
     {
         image.source = img_path;
@@ -98,7 +106,6 @@ Rectangle {
             zoomInItemFull.start();
         }
     }
-
 
     function zoomToFullWidthTop(item)
     {
