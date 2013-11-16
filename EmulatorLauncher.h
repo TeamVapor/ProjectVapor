@@ -25,8 +25,8 @@ public:
 * Constructor
 ******************************************************************************/
     EmulatorLauncher(QObject* parent = nullptr):QObject(parent),
-        mProcess(nullptr), mSystemRomsDir(QDir::homePath() + "Games"
-         + QDir::separator() + "Roms" + QDir::separator())
+        mProcess(nullptr), mSystemRomsDir(QDir::homePath() + QDir::separator()
+        + "Games" + QDir::separator() + "Roms" + QDir::separator())
     {}
 /******************************************************************************
 *	Destructor
@@ -59,14 +59,14 @@ public:
         {
             qDebug() << "already Running";
         }
-        else if(ret = loadEmu.exists())
+        else if((ret = loadEmu.exists(loadEmu.path())))
         {
             mLastPlayedGame = game;
             mLastPlayedSystem = system;
             mProcess = new QProcess;
             mProcess->setProcessChannelMode(QProcess::MergedChannels);
-            mProcess->disconnect();
             connect(mProcess,SIGNAL(readyRead()),this,SLOT(processLauncherData()));
+            connect(mProcess,SIGNAL(finished(int)),this,SLOT(ProcessFinished(int)));
             ret = QDir("/usr/bin/python").exists();
             mProcess->start("/usr/bin/python " + loadEmu.path());
 
@@ -82,9 +82,11 @@ public:
 *** INPUT **
 *   Takes a emulator systrm and path to the game.
 ******************************************************************************/
-    Q_INVOKABLE void start()
+    Q_INVOKABLE void start(const QString & system, const QString & game)
     {
-        start(mLastPlayedSystem, mLastPlayedGame);
+        mLastPlayedGame = game;
+        mLastPlayedSystem = system;
+        start();
     }
 
 /******************************************************************************
@@ -95,7 +97,7 @@ public:
 *** INPUT **
 *   Takes a emulator systrm and path to the game.
 ******************************************************************************/
-    Q_INVOKABLE void start(const QString & system, const QString & game)
+    Q_INVOKABLE void start()
     {
         //check is the process exists
         if(mProcess != nullptr)
@@ -116,12 +118,13 @@ public:
             filters.append("*.py");
             //look for emulator core scripts
             //QDir loadEmu(QDir::homePath() + "/Desktop/fixbuild/Emulator/" + EmuType);
-            QDir loadEmu(QDir::currentPath() + QDir::separator() + "Emulator" + QDir::separator() + system);
+            QDir loadEmu(QDir::currentPath() + QDir::separator() + "Emulator" + QDir::separator() + mLastPlayedSystem + QDir::separator());
 
             //get a list of emulator core script files
 
             QStringList foo = loadEmu.entryList(filters);
             //check if there are emulator cores
+            qDebug() << loadEmu.path();
             if(foo.isEmpty())
             {
                 emit NoEmulatorsFound(loadEmu.path());
@@ -130,9 +133,7 @@ public:
             }
             else if (foo.count() == 1)
             {//get core information if ther is only one result
-                mLastPlayedGame = game;
-                mLastPlayedSystem = system;
-                loadEmulator(mLastPlayedSystem,foo.first(),game);
+                loadEmulator(mLastPlayedSystem,foo.first(),mLastPlayedGame);
             }
             else
             {//if there are multiple core scripts give a list of all cores found
@@ -159,9 +160,9 @@ public:
     }
 
 signals:
-    Q_INVOKABLE void MultipleEmulatorsFound(QStringList emuList);
-    Q_INVOKABLE void NoEmulatorsFound(QString directory);
-    Q_INVOKABLE void BadPyDataProcessed();
+    void MultipleEmulatorsFound(QStringList emuList);
+    void NoEmulatorsFound(QString directory);
+    void BadPyDataProcessed();
 public slots:
 /******************************************************************************
 *	stop
@@ -203,14 +204,20 @@ public slots:
             mEmulatorDir = var[1].split('=').last();
             QString tmp(var[2].split('=').last());
             mArguments = tmp.mid(1,tmp.length()-2);
-            QString build = mEmulatorDir.replace("\"","") + " " + mArguments + " " + mLastPlayedGame;
-            qDebug() << "PythonFile Output"<< build;
+            QString build (mEmulatorDir+ " " + (mArguments.length()>0?mArguments + " ":"") + "\"" + mSystemRomsDir + mLastPlayedSystem + "/" + mLastPlayedGame + "\"");
+            qDebug() << "Starting process with string" << build;
             stop();
             mProcess = new QProcess;
-            connect(mProcess,SIGNAL(finished(int)),this,SLOT(stop()));
-            mProcess->start(mEmulatorDir+ " " + (mArguments.length()>0?mArguments + " ":"") + mSystemRomsDir+ "/"+ mLastPlayedSystem + "/" + mLastPlayedGame);
+            connect(mProcess,SIGNAL(finished(int)),this,SLOT(stop(int)));
+            mProcess->start(build);
         }
     }
+    void ProcessFinished(int foo)
+    {
+        qDebug() << "Python Done " << foo;
+        stop();
+    }
+
 private:
     QProcess* mProcess;
     QString mSystemRomsDir;

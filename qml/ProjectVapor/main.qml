@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Window 2.0
 import "ZoomableSurface.js" as ZoomSurface
+import com.vapor.project 1.0
 Rectangle {
     id: homeScreen
     width: ScreenWidth
@@ -21,6 +22,11 @@ Rectangle {
     property int gamespershelfcount: 0
     color: "blue"
     scale: 1.0
+    EmulatorLauncher
+    {
+        id:emuLauncher
+    }
+
     SIPKeyboard
     {
         id:sipKeyboard

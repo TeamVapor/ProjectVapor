@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-
 ZoomItem {
 
     //property alias bookshelfBG: bookshelfBG
@@ -8,7 +7,7 @@ ZoomItem {
 
     property ListModel gamesList: GameList{  }
     property var validIndexArray: []
-    property int shelfcount: 0
+    property int shelfcount: 7
     property int currentArrayIndex: 0
     property int gamesPerRow: 16
     property bool navigatingGames: false

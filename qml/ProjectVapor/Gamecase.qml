@@ -57,8 +57,7 @@ Component{
         {
             if(isGame && display != "")
             {
-                poster.emuLauncher.setArguments("-m -v 14 /home/jack/ROMS/" + game);
-                poster.emuLauncher.start();
+                emuLauncher.start(system,game);
             }
         }
     }

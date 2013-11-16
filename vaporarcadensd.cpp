@@ -5,7 +5,7 @@ VaporArcadeNSD::VaporArcadeNSD(QObject *parent) :
 {
     connect(&mChatBrowser,SIGNAL(recordsChanged()),this,SLOT(userRecordsChanged()));
     connect(&mGameBrowser,SIGNAL(recordsChanged()),this,SLOT(gameRecordsChanged()));
-    mChatBrowser.setLocalName("DRSANCHEZ");
+    mChatBrowser.setLocalName("Dr.Lindbergenstien");
     mChatBrowser.registerService("Vapor Arcade Chat","_vaporarcade_chat._tcp",0);
     beginBrowsingUsers();
     beginBrowsingLobbies();
