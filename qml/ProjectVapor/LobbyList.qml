@@ -7,21 +7,15 @@ VaporRectangle
     focus: false
     pressable: false
 
-/*
-    //defines the data within the list
-    ListModel
-    {
-        id: lobbyListModel
 
-        ListElement
-        {
-            lobbyName: "LobbyName"
-        }
-    }*/
-
-
-    //defines how the data from list model
-    //is displayed from the list view
+    /**************************************************************************
+    *
+    * this object describes how to format and display data
+    * collected from the model used by the ListView
+    *
+    *
+    *
+    ***************************************************************************/
     Component
     {
         id: lobbyDelegate
@@ -55,8 +49,14 @@ VaporRectangle
         }
     }
 
-    //manages the list model and delegate
-    //as well as contains its scrollbar
+    /**************************************************************************
+    *
+    * this object manages the delegate and model of the lobby list
+    * contains scrollbar
+    *
+    *
+    *
+    ***************************************************************************/
     ListView
     {
         id: lobbyList
@@ -75,13 +75,28 @@ VaporRectangle
             color: "#2b3c58"
             clip: true
         }
-    }
 
-    /*Keys.onPressed:
-    {
-        if (event.key == Qt.Key_Return)
-            lobbyListModel.append({"lobbyName": "TeamVapor Lobby"});
-        else if (event.key == Qt.Key_X)
-            lobbyListModel.remove({"lobbyName": "TeamVapor Lobby"});
-    }*/
+        header: VaporRectangle
+        {
+            id: headerBlock
+            width: lobbyListContainer.width - scrollbar.width
+            height: lobbyListContainer.height / 8
+            focus: false
+            gradient: Gradient
+            {
+                GradientStop { position: 0.00; color: light; }
+                GradientStop { position: 1.00; color: dark; }
+            }
+            border.width: 3
+            border.color: shadow
+            Text
+            {
+                id: headerBlockText
+                anchors.centerIn: headerBlock
+                font.pixelSize: headerBlock.height < headerBlock.width ? headerBlock.width / text.length : headerBlock.height / text.length
+                color: text
+                text: "Lobby List"
+            }
+        }
+    }
 }

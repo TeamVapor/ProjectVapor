@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import './NetLobbyHandler.js' as Handler
+import './ChatHandler.js' as Handler
 
 ZoomItem
 {
@@ -53,7 +53,7 @@ ZoomItem
 
         KeyNavigation.up: userListContainer
         KeyNavigation.down: userListContainer
-        KeyNavigation.right: textInputContainer
+        KeyNavigation.right: textEditor
 
         LobbyList
         {
@@ -84,9 +84,9 @@ ZoomItem
             color: shadow
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            KeyNavigation.left: userList
+            KeyNavigation.left: userListContainer
             KeyNavigation.down: textAreaContainer
-            KeyNavigation.up: textInputContainer
+            KeyNavigation.up: textEditor
             KeyNavigation.right: vaporVideo
 
             Image
@@ -95,7 +95,7 @@ ZoomItem
                 width: parent.width
                 height: parent.height
                 fillMode: Image.PreserveAspectFit
-                source: "/home/jack/Desktop/NetLobbyandGameLobbyRefactor/tmnt_banner.png"
+                source: "../../tmnt_banner.png"
             }
         }
     }//end game banner area
@@ -106,7 +106,7 @@ ZoomItem
         id: textAreaContainer
         width: parent.width * 0.5
         height: parent.height * 0.6
-        anchors.bottom: textInputContainer.top
+        anchors.bottom: textEditor.top
         anchors.horizontalCenter: parent.horizontalCenter
         color: "transparent"
         pressable: false
@@ -114,8 +114,8 @@ ZoomItem
         //perhaps allow selection later for text grabbing, etc.. from group chat?
 
         KeyNavigation.up: gameBanner
-        KeyNavigation.down: textInputContainer
-        KeyNavigation.left: userList
+        KeyNavigation.down: textEditor
+        KeyNavigation.left: userListContainer
         KeyNavigation.right: vaporVideo
 
         VaporRectangle
@@ -143,116 +143,12 @@ ZoomItem
         }
     }//end text area
 
-    //begin text input area
-    VaporRectangle
+    VaporTextEdit
     {
-        id: textInputContainer
-        width: parent.width * 0.5
-        height: parent.height * 0.2
+        id: textEditor
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        color: "transparent"
-        pressable: false
-
-        KeyNavigation.up: textAreaContainer
-        KeyNavigation.left: lobbyList
-        KeyNavigation.down: gameBanner
-        KeyNavigation.right: playButton
-
-        Keys.onReturnPressed:
-        {
-            textInputContainer.focus = false;
-            inputContainer.focus = true;
-            event.accepted = true;
-        }
-
-        //begin text input bar
-        VaporRectangle
-        {
-            id: inputContainerPositioner
-            width: parent.width * 0.8
-            height: parent.height
-            anchors.left: parent.left
-            color: "transparent"
-
-            //begin text input bar
-            //need to modularize for keyboard input
-            VaporRectangle
-            {
-                id: inputContainer
-                width: parent.width * 0.95
-                height: parent.height * 0.95
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                color: dark
-                focus: false
-
-                Keys.onReturnPressed:
-                {
-                    inputContainer.focus = false;
-                    textInput.focus = true;
-                    event.accepted = true;
-                }
-
-                KeyNavigation.right: sendButton
-                KeyNavigation.up: textAreaContainer
-
-                TextEdit
-                {
-                    id: textInput
-                    width: parent.width
-                    height: parent.height
-                    textMargin: 8
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: light
-                    font.pointSize: 16
-                    activeFocusOnPress: true
-                    wrapMode: TextEdit.Wrap
-                    focus: false
-
-                    Keys.onReturnPressed:
-                    {
-                        Handler.messageInput();
-                    }
-
-                    Keys.onEscapePressed:
-                    {
-                        textInput.focus = false;
-                        inputContainer.focus = true;
-                        event.accepted = true;
-                    }
-
-                    //on pressed, open onscreenkeyboard
-                }
-            }
-        }//end text input bar
-
-        //begin send button
-        VaporRectangle
-        {
-            id: sendButtonPositioner
-            width: parent.width * 0.2
-            height: parent.height
-            anchors.right: parent.right
-            color: "transparent"
-            pressable: false
-
-            Button
-            {
-                id: sendButton
-                width: parent.width * 0.95
-                height: parent.height * 0.95
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                text: "Send"
-                KeyNavigation.left: inputContainer
-                KeyNavigation.up: textAreaContainer
-
-                onClicked: Handler.messageInput();
-            }
-        }//end send button
-    }//end text input area
+    }
 
     VaporRectangle
     {
@@ -274,7 +170,7 @@ ZoomItem
             color: "transparent"
 
             KeyNavigation.left: gameBanner
-            KeyNavigation.right: userList
+            KeyNavigation.right: userListContainer
             KeyNavigation.up: backButton
             KeyNavigation.down: playButton
 
@@ -320,8 +216,8 @@ ZoomItem
                 //right hand screen is determined
                 KeyNavigation.up: vaporVideo
                 KeyNavigation.down: backButton
-                KeyNavigation.left: textInputContainer
-                KeyNavigation.right: lobbyList
+                KeyNavigation.left: textEditor
+                KeyNavigation.right: lobbyListContainer
 
                 onClicked:
                 {
@@ -350,8 +246,8 @@ ZoomItem
 
                 KeyNavigation.up: playButton
                 KeyNavigation.down: vaporVideo
-                KeyNavigation.left: textInputContainer
-                KeyNavigation.right: lobbyList
+                KeyNavigation.left: textEditor
+                KeyNavigation.right: lobbyListContainer
 
                 onClicked:
                 {

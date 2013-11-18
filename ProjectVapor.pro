@@ -29,7 +29,8 @@ qtcAddDeployment()
 RESOURCES += \
     ArtResources.qrc
 
-OTHER_FILES +=
+OTHER_FILES += \
+    qml/ProjectVapor/ChatHandler.js
 
 HEADERS += \
     EmulatorLauncher.h \

@@ -22,8 +22,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
-    //viewer.showFullScreen();
+    viewer.showFullScreen();
     //viewer.showExpanded();
-    viewer.show();
     return app.exec();
 }

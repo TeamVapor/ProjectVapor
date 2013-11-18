@@ -120,10 +120,10 @@ Rectangle
             from: "*"; to: "selected"
             ParallelAnimation
             {
-                NumberAnimation { target: vaporRect; property: "scale"; from: 1.0; to: scalable ? 1.05 : 1.00; duration: 250; easing.type: Easing.InOutQuad }
-                NumberAnimation { target: vaporGlow; property: "opacity"; from: 0.0; to: 0.7; duration: 100; easing.type: Easing.InOutQuad }
-                NumberAnimation { target: vaporGlow; property: "spread"; from: 0.0; to: 1.0; duration: 100; easing.type: Easing.InOutQuad }
-                NumberAnimation { target: vaporGlow; property: "spread"; from: 1.0; to: 0.2; duration: 100; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: vaporRect; property: "scale"; from: 1.0; to: scalable ? 1.05 : 1.00; duration: 50; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: vaporGlow; property: "opacity"; from: 0.0; to: 0.7; duration: 50; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: vaporGlow; property: "spread"; from: 0.0; to: 1.0; duration: 50; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: vaporGlow; property: "spread"; from: 1.0; to: 0.2; duration: 50; easing.type: Easing.InOutQuad }
             }
         },
 
@@ -132,9 +132,9 @@ Rectangle
             from: "selected"; to: "*"
             ParallelAnimation
             {
-                NumberAnimation { target: vaporRect; property: "scale"; from: scalable ? 1.05 : 1.00; to: 1.0; duration: 250; easing.type: Easing.InOutQuad }
-                NumberAnimation { target: vaporGlow; property: "opacity"; from: 0.7; to: 0.0; duration: 100; easing.type: Easing.InOutQuad }
-                NumberAnimation { target: vaporGlow; property: "spread"; from: 0.2; to: 0.0; duration: 100; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: vaporRect; property: "scale"; from: scalable ? 1.05 : 1.00; to: 1.0; duration: 50; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: vaporGlow; property: "opacity"; from: 0.7; to: 0.0; duration: 50; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: vaporGlow; property: "spread"; from: 0.2; to: 0.0; duration: 50; easing.type: Easing.InOutQuad }
             }
         },
 

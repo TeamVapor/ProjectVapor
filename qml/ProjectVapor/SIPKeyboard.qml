@@ -4,6 +4,10 @@ FocusScope
 {
     property var currentFocus: null
     property alias inputtext: textField.text
+
+    //used to return to previous selection
+    property var lastParent: null
+
     Rectangle {
         id: keyboardMain
         width: ScreenWidth
@@ -290,11 +294,18 @@ FocusScope
                sipKeyboard.visible = false;
                sipKeyboard.currentFocus.focus = true;
            }
+           else if (event.key == Qt.Key_Escape)
+           {
+               sipKeyboard.visible = false;
+               sipKeyboard.focus = false;
+               lastParent.focus = true;
+           }
        }
     }
     function setInput(input)
     {
         textField.text = input.text;
         currentFocus = input;
+        lastParent = input.parent;
     }
 }

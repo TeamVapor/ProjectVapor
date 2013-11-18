@@ -13,19 +13,6 @@ ZoomItem {
     glowZ: -10000
     scalable: false
 
-    /*Glow
-    {
-        anchors.centerIn: router
-        color: "yellow"
-        width: router.width *1.01
-        height: router.height *1.01
-        source:image
-        samples:10
-        radius: 8
-        spread: 1.0
-        visible: router.focus
-        enabled: router.focus
-    }*/
     Keys.onPressed:
     {
         if (event.key == Qt.Key_Return) {

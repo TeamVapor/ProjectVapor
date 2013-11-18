@@ -2,6 +2,7 @@ import QtQuick 2.1
 import QtQuick.Window 2.0
 import "ZoomableSurface.js" as ZoomSurface
 import com.vapor.project 1.0
+
 Rectangle {
     id: homeScreen
     width: ScreenWidth
@@ -13,6 +14,7 @@ Rectangle {
     property var monitor: undefined
     property var router: undefined
     property var netLobby: undefined
+    property var gameLobby: undefined
     property var settingsMenu: undefined
     property var poster: undefined
     property int shelfcount: 0
@@ -22,6 +24,15 @@ Rectangle {
     property int gamespershelfcount: 0
     color: "blue"
     scale: 1.0
+
+    Image
+    {
+        id: mainBackground
+        width: zoomsurface.width
+        height: zoomsurface.height
+        source: "qrc:/images/wall_texture.jpg"
+    }
+
     EmulatorLauncher
     {
         id:emuLauncher
@@ -86,6 +97,9 @@ Rectangle {
         netLobby = ZoomSurface.addItem(zoomsurface, "NetLobby.qml", screenwidth, screenheight, 0, 0);
         netLobby.z = 100;
         netLobby.visible = false;
+        gameLobby = ZoomSurface.addItem(zoomsurface, "GameLobby.qml", screenwidth, screenheight, 0, 0);
+        gameLobby.z = 100;
+        gameLobby.visible = false;
         settingsMenu = ZoomSurface.addItem(zoomsurface, "ZsnesSettings.qml", screenwidth, screenheight, 0, 0);
         settingsMenu.z = 100;
         settingsMenu.visible = false;

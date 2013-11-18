@@ -9,16 +9,6 @@ VaporRectangle
     focus: false
     pressable: false
 
-    /*ListModel
-    {
-        id: userModel
-
-        ListElement
-        {
-            userName: "Default"
-        }
-    }*/
-
     //dynamic user element
     Component
     {
@@ -72,17 +62,28 @@ VaporRectangle
             height: parent.visibleArea.heightRatio * parent.height
             color: "#2b3c58"
         }
-    }
 
-    /*Keys.onPressed:
-    {
-        if (event.key == Qt.Key_Return)
+        header: VaporRectangle
         {
-            userModel.append({"userName": "Darth Vader"});
+            id: headerBlock
+            width: userListContainer.width - scrollbar.width
+            height: userListContainer.height / 8
+            focus: false
+            gradient: Gradient
+            {
+                GradientStop { position: 0.00; color: light; }
+                GradientStop { position: 1.00; color: dark; }
+            }
+            border.width: 3
+            border.color: shadow
+            Text
+            {
+                id: headerBlockText
+                anchors.centerIn: headerBlock
+                font.pixelSize: headerBlock.height < headerBlock.width ? headerBlock.width / text.length : headerBlock.height / text.length
+                color: text
+                text: "User List"
+            }
         }
-        else if (event.key == Qt.Key_X)
-        {
-            userModel.remove({"userName": "Darth Vader"});
-        }
-    }*/
+    }
 }

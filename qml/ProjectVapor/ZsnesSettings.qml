@@ -2,16 +2,19 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 
+
+//going through refactor
 ZoomItem
 {
     id: settingsContainer
-    SystemPalette{id: activePalette}
-    color: activePalette.midlight
+    color: base
 
 
     Keys.onEscapePressed:
     {
-        //visible = false;
+        settingsContainer.focus = false;
+        settingsContainer.visible = false;
+        monitor.focus = true;
         zoomsurface.zoomOutToFull();
     }
 
@@ -20,7 +23,7 @@ ZoomItem
         id: emuVideoSettings
         width: settingsContainer.width / 2
         height: settingsContainer.height
-        color: activePalette.dark
+        color: dark
         //anchors.top: settingsContainer.top
         anchors.left: emuDisplaySettings.right
         anchors.margins: 4
@@ -74,7 +77,7 @@ ZoomItem
         id: emuDisplaySettings
         width: settingsContainer.width / 2
         height: settingsContainer.height
-        color: activePalette.dark
+        color: dark
         anchors.top: settingsContainer.top
         anchors.left: settingsContainer.left
         anchors.margins: 4

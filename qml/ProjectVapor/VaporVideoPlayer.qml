@@ -10,7 +10,7 @@ VaporRectangle
     MediaPlayer
     {
         id: player
-        source: "/home/jack/Desktop/NetLobbyandGameLobbyRefactor/turtles1.webm"
+        source: "../../turtles1.webm"
         muted: true
         autoPlay: true
         property bool trailerPicker: false
@@ -31,12 +31,12 @@ VaporRectangle
         if (player.trailerPicker)
         {//trailerPicker == true
             player.trailerPicker = false;
-            return "/home/jack/Desktop/NetLobbyandGameLobbyRefactor/turtles1.webm";
+            return "../../turtles1.webm";
         }
         else if (!player.trailerPicker)
         {//trailerPicker == false
             player.trailerPicker = true;
-            return "/home/jack/Desktop/NetLobbyandGameLobbyRefactor/turtles2.webm";
+            return "../../turtles2.webm";
         }
     }
 }
