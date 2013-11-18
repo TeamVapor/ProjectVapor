@@ -44,7 +44,7 @@ QStringList QNSDManager::getServiceNames()
 
 void QNSDManager::recordResolved(QHostInfo host_info, int port)
 {
-    qDebug() << host_info.hostName() << " found at "<< host_info.addresses().first().toString();
+    //qDebug() << host_info.hostName() << " found at "<< host_info.addresses().first().toString();
     emit resolvedRecord(host_info,port);
 }
 
@@ -128,7 +128,7 @@ void QNSDManager::updateRecords(const QList<BonjourRecord> &list)
     QVariant variant;
     foreach (BonjourRecord record, list) {
         variant.setValue(record);
-        qDebug() << record.serviceName + " " +record.registeredType;
+        //qDebug() << record.serviceName + " " +record.registeredType;
         mNSDRecords.append(record);
     }
     emit recordsChanged();

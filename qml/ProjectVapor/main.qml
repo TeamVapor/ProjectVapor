@@ -28,8 +28,9 @@ Rectangle {
     Image
     {
         id: mainBackground
-        width: zoomsurface.width
-        height: zoomsurface.height
+        width: ScreenWidth
+        height: ScreenHeight
+        fillMode: Image.Tile
         source: "qrc:/images/wall_texture.jpg"
     }
 

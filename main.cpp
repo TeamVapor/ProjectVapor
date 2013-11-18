@@ -7,6 +7,7 @@
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include "vaporarcadensd.h"
+#include "applicationsettings.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -16,10 +17,9 @@ int main(int argc, char *argv[])
     int screen_height = pscreen->geometry().height();
     viewer.rootContext()->setContextProperty("ScreenWidth", screen_width);
     viewer.rootContext()->setContextProperty("ScreenHeight",screen_height);
-    VaporArcadeNSD vpnsd(&app);
+    ApplicationSettings settings;
+    VaporArcadeNSD vpnsd(&app, settings.getUserName());
     vpnsd.setContext(viewer.rootContext());
-    //EmulatorLauncher emuLauncher(&app);
-
     qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
     viewer.showFullScreen();

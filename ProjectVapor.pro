@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     Bonjour/bonjourserviceresolver.cpp \
     Bonjour/bonjourserviceregister.cpp \
     Bonjour/bonjourservicebrowser.cpp \
-    vaporarcadensd.cpp
+    vaporarcadensd.cpp \
+    applicationsettings.cpp
 
 # Installation path
 # target.path =
@@ -39,7 +40,8 @@ HEADERS += \
     Bonjour/bonjourserviceregister.h \
     Bonjour/bonjourservicebrowser.h \
     Bonjour/bonjourrecord.h \
-    vaporarcadensd.h
+    vaporarcadensd.h \
+    applicationsettings.h
 
 CONFIG += c++11
 

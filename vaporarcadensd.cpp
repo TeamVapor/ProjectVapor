@@ -1,11 +1,11 @@
 #include "vaporarcadensd.h"
 #include <QQmlContext>
-VaporArcadeNSD::VaporArcadeNSD(QObject *parent) :
+VaporArcadeNSD::VaporArcadeNSD(QObject *parent, QString Username) :
     QObject(parent)
 {
     connect(&mChatBrowser,SIGNAL(recordsChanged()),this,SLOT(userRecordsChanged()));
     connect(&mGameBrowser,SIGNAL(recordsChanged()),this,SLOT(gameRecordsChanged()));
-    mChatBrowser.setLocalName("DRSANCHEZ");
+    mChatBrowser.setLocalName(Username);
     mChatBrowser.registerService("Vapor Arcade Chat","_vaporarcade_chat._tcp",0);
     beginBrowsingUsers();
     beginBrowsingLobbies();

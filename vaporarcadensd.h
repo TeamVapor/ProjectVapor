@@ -8,7 +8,7 @@ class VaporArcadeNSD : public QObject
 {
     Q_OBJECT
 public:
-    explicit VaporArcadeNSD(QObject *parent = 0);
+    explicit VaporArcadeNSD(QObject *parent = 0, QString Username = "");
     void setContext(QQmlContext * context);
 
 signals:
