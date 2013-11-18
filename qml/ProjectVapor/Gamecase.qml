@@ -35,7 +35,7 @@ Component{
                 displayText.visible = false;
                 if(display != "")
                 {
-                    displayImage.source = display;
+                    displayImage.source = AppSettings.getCoverDirectory() + display;
                     displayImage.visible = true;
                     gameCase.visible = true;
                     validIndexArray[validIndexArray.length] = index;

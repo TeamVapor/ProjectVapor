@@ -19,7 +19,7 @@ ZoomItem
         anchors.fill: posterContainer
         fillMode: Image.PreserveAspectFit
         focus: false
-        source: "qrc:/images/super_metroid.jpg"
+        source: AppSettings.getPosterDirectory() +"/super_metroid.jpg"
         //Keys.onReturnPressed: emuLauncher.start();
     }
 

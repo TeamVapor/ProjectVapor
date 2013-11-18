@@ -95,7 +95,7 @@ ZoomItem
                 width: parent.width
                 height: parent.height
                 fillMode: Image.PreserveAspectFit
-                source: "../../tmnt_banner.png"
+                source: AppSettings.getCoverDirectory() +"/tmnt4_banner.png"
             }
         }
     }//end game banner area

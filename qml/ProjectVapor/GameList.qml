@@ -759,13 +759,13 @@ ListModel{
     }
     ListElement{
         isGame: true
-        display: "qrc:/images/SuperMStars.png"
+        display: "/SuperMStars.png"
         system: "SNES"
         game:"Super Mario World.smc"
     }
     ListElement{
         isGame: true
-        display: "qrc:/images/SuperMetroid.png"
+        display: "/SuperMetroid.png"
         system: "SNES"
         game: "Super Metroid.smc"
     }

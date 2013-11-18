@@ -8,22 +8,21 @@ class ApplicationSettings : public QObject
     Q_OBJECT
 public:
     explicit ApplicationSettings(QObject *parent = 0);
-    QString getUserName(){return mUserName;}
-    QString getEmulatorDirectory(){return mEmulatorDirectory;}
-    QString getRomDirectory(){return mRomDirectory;}
-    QString getCoverDirectory(){return mCoverDirectory;}
-    QString getPosterDirectory(){return mPosterDirectory;}
-    QString getVideoDirectory(){return mVideoDirectory;}
-    QString setUserName(QString username){return mUserName = username;}
-    QString setEmulatorDirectory(QString emulator_dir){return mEmulatorDirectory = emulator_dir;}
-    QString setRomDirectory(QString rom_dir){return mRomDirectory = rom_dir;}
-    QString setCoverDirectory(QString cover_dir){return mCoverDirectory = cover_dir;}
-    QString setPosterDirectory(QString poster_dir){return mPosterDirectory = poster_dir;}
-    QString setVideoDirectory(QString video_dir){return mVideoDirectory = video_dir;}
-
-signals:
+    Q_INVOKABLE QString getUserName(){return mUserName;}
+    Q_INVOKABLE QString getEmulatorDirectory(){return mEmulatorDirectory;}
+    Q_INVOKABLE QString getRomDirectory(){return mRomDirectory;}
+    Q_INVOKABLE QString getCoverDirectory(){return mCoverDirectory;}
+    Q_INVOKABLE QString getPosterDirectory(){return mPosterDirectory;}
+    Q_INVOKABLE QString getVideoDirectory(){return mVideoDirectory;}
 
 public slots:
+    void setUserName(QString username){mUserName = username;}
+    void setEmulatorDirectory(QString emulator_dir){mEmulatorDirectory = emulator_dir;}
+    void setRomDirectory(QString rom_dir){mRomDirectory = rom_dir;}
+    void setCoverDirectory(QString cover_dir){mCoverDirectory = cover_dir;}
+    void setPosterDirectory(QString poster_dir){mPosterDirectory = poster_dir;}
+    void setVideoDirectory(QString video_dir){mVideoDirectory = video_dir;}
+
 
 private:
     QString mUserName;

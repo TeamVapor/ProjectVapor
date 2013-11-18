@@ -10,7 +10,7 @@ VaporRectangle
     MediaPlayer
     {
         id: player
-        source: "../../turtles1.webm"
+        source: AppSettings.getVideoDirectory()+"/turtles1.webm"
         muted: true
         autoPlay: true
         property bool trailerPicker: false
@@ -31,12 +31,12 @@ VaporRectangle
         if (player.trailerPicker)
         {//trailerPicker == true
             player.trailerPicker = false;
-            return "../../turtles1.webm";
+            return AppSettings.getVideoDirectory()+"/turtles1.webm";
         }
         else if (!player.trailerPicker)
         {//trailerPicker == false
             player.trailerPicker = true;
-            return "../../turtles2.webm";
+            return AppSettings.getVideoDirectory()+"/turtles2.webm";
         }
     }
 }

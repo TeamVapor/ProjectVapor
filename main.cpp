@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("ScreenHeight",screen_height);
     ApplicationSettings settings;
     VaporArcadeNSD vpnsd(&app, settings.getUserName());
+    viewer.rootContext()->setContextProperty("AppSettings",&settings);
     vpnsd.setContext(viewer.rootContext());
     qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
