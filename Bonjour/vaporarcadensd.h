@@ -2,7 +2,7 @@
 #define VAPORARCADENSD_H
 
 #include <QObject>
-#include "qnsdmanager.h"
+#include "Bonjour/qnsdmanager.h"
 class QQmlContext;
 class VaporArcadeNSD : public QObject
 {

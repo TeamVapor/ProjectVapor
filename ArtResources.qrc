@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/images">
-        <file>bookshelfshelf.png</file>
-        <file>wall_texture.jpg</file>
-        <file>desk.png</file>
-        <file>monitor.png</file>
-        <file>router.png</file>
-        <file>dpad.png</file>
+        <file alias="bookshelfshelf.png">images/bookshelfshelf.png</file>
+        <file alias="desk.png">images/desk.png</file>
+        <file alias="dpad.png">images/dpad.png</file>
+        <file alias="monitor.png">images/monitor.png</file>
+        <file alias="router.png">images/router.png</file>
+        <file alias="wall_texture.jpg">images/wall_texture.jpg</file>
     </qresource>
 </RCC>

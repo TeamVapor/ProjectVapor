@@ -13,12 +13,12 @@ QML_IMPORT_PATH =
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    qnsdmanager.cpp \
     Bonjour/bonjourserviceresolver.cpp \
     Bonjour/bonjourserviceregister.cpp \
     Bonjour/bonjourservicebrowser.cpp \
-    vaporarcadensd.cpp \
-    applicationsettings.cpp
+    Bonjour/qnsdmanager.cpp \
+    Bonjour/vaporarcadensd.cpp \
+    Settings/applicationsettings.cpp
 
 # Installation path
 # target.path =
@@ -34,14 +34,15 @@ OTHER_FILES += \
     qml/ProjectVapor/ChatHandler.js
 
 HEADERS += \
-    EmulatorLauncher.h \
     qnsdmanager.h \
     Bonjour/bonjourserviceresolver.h \
     Bonjour/bonjourserviceregister.h \
     Bonjour/bonjourservicebrowser.h \
     Bonjour/bonjourrecord.h \
-    vaporarcadensd.h \
-    applicationsettings.h
+    Bonjour/qnsdmanager.h \
+    Emulator/EmulatorLauncher.h \
+    Bonjour/vaporarcadensd.h \
+    Settings/applicationsettings.h
 
 CONFIG += c++11
 

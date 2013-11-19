@@ -2,12 +2,12 @@
 #include <QtGui/QGuiApplication>
 #include "qtquick2applicationviewer.h"
 #include <QtQuick/QQuickView>
-#include "EmulatorLauncher.h"
+#include "Emulator/EmulatorLauncher.h"
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQmlComponent>
-#include "vaporarcadensd.h"
-#include "applicationsettings.h"
+#include "Bonjour/vaporarcadensd.h"
+#include "Settings/applicationsettings.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
