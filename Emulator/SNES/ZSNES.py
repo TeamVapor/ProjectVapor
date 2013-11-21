@@ -1,7 +1,7 @@
 import argparse
 
 ## FILL IN EMULATOR PATH (Absolute)
-EmulatorPath = "zsnes"
+EmulatorPath = "/usr/bin/zsnes"
 ## FILL IN EMULATOR ARGUMENTS
 Arguments = "-m"
 

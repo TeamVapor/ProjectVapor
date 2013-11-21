@@ -2,11 +2,11 @@
 import argparse
 import os
 ## FILL IN EMULATOR PATH (Absolute)
-EmulatorPath = "VBA"
+EmulatorPath = "/usr/bin/VisualBoyAdvance"
 ## FILL IN EMULATOR ARGUMENTS
-Arguments = "-c VisualBoyAdvance.cfg"
+Arguments = "-c /etc/VisualBoyAdvance.cfg"
 ## FILL IN EMULATOR SETTINGS FILE PATH (Absolute)
-SettingsFile = "Emlulator/GBA/VisualBoyAdvance.cfg"
+SettingsFile = "/etc/VisualBoyAdvance.cfg"
 
 def main():
     parser = argparse.ArgumentParser(description='VBA Emulator and Settings Interface')

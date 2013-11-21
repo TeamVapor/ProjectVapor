@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     Bonjour/bonjourservicebrowser.cpp \
     Bonjour/qnsdmanager.cpp \
     Bonjour/vaporarcadensd.cpp \
-    Settings/applicationsettings.cpp
+    Settings/applicationsettings.cpp \
+    Emulator/EmulatorCore.cpp
 
 # Installation path
 # target.path =
@@ -42,7 +43,8 @@ HEADERS += \
     Bonjour/qnsdmanager.h \
     Emulator/EmulatorLauncher.h \
     Bonjour/vaporarcadensd.h \
-    Settings/applicationsettings.h
+    Settings/applicationsettings.h \
+    Emulator/EmulatorCore.h
 
 CONFIG += c++11
 

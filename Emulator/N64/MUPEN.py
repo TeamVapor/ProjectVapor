@@ -1,7 +1,7 @@
 import argparse
 
 ## FILL IN EMULATOR PATH (Absolute)
-EmulatorPath = "mupen64plus"
+EmulatorPath = "/usr/bin/mupen64plus"
 ## FILL IN EMULATOR ARGUMENTS
 Arguments = ""
 
