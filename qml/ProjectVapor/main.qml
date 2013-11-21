@@ -106,6 +106,8 @@ Rectangle {
         settingsMenu.visible = false;
         poster = ZoomSurface.addItem(zoomsurface, "Poster.qml", screenwidth / 3, screenheight / 1.5, screenwidth * 0.2, screenheight * 0.2);
         poster.visible = true;
+        emuLauncher.setEmulatorSystemDir(AppSettings.getEmulatorDirectory());
+        emuLauncher.setRomsDir(AppSettings.getRomDirectory());
         zoomsurface.scaledOutValue = screenwidth/zoomsurface.width;
         zoomsurface.zoomOutToFull();
     }

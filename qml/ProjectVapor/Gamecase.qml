@@ -27,7 +27,6 @@ Component{
             anchors.fill: parent
             fillMode: Image.Stretch
         }
-
         Component.onCompleted:
         {
             if(isGame)
@@ -53,6 +52,11 @@ Component{
                 validIndexArray[validIndexArray.length] = index;
             }
         }
+	Keys.onPressed:
+	{
+		if(event.key == Qt.Key_Return)
+			start();
+	}
         property var start: function()
         {
             if(isGame && display != "")

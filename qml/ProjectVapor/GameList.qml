@@ -9,15 +9,9 @@ ListModel{
     }
     ListElement{
         isGame: true
-        display: ""
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
-        system: ""
-        game: ""
+        display: "/Army_Men_Air_Combat.jpg"
+        system: "N64"
+        game: "Army Men - Air Combat.z64"
     }
     ListElement{
         isGame: true
@@ -597,9 +591,9 @@ ListModel{
     }
     ListElement{
         isGame: true
-        display: ""
-        system: ""
-        game: ""
+        display: "/Pokemon_Emerald_Spine.jpg"
+        system: "GBA"
+        game: "Pokemon Emerald.gba"
     }
     ListElement{
         isGame: true
