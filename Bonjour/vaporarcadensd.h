@@ -10,20 +10,24 @@ class VaporArcadeNSD : public QObject
 public:
     explicit VaporArcadeNSD(QObject *parent = 0, QString Username = "");
     void setContext(QQmlContext * context);
-
+    QMultiHash<QPair<QHostAddress,int>,QString>  getRecordAdresses();
+    void resolveRecords();
 signals:
-
+    void userListChanged();
 
 public slots:
     void beginBrowsingUsers();
     void beginBrowsingLobbies();
     void userRecordsChanged();
     void gameRecordsChanged();
+    void resolvedRecord(QHostInfo hostinfo,int port);
     void startGameLobby(QString lobbyname);
-
+    
 private:
     QNSDManager    mChatBrowser;
     QNSDManager    mGameBrowser;
+    QMultiHash<QPair<QHostAddress,int>,QString>  mAddressList;
+    int            mCurrentRecord;
     QVariantList   mUserList;
     QVariantList   mGameLobbyList;
     QQmlContext    *mContext;

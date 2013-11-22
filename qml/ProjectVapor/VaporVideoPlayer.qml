@@ -12,7 +12,7 @@ VaporRectangle
         id: player
         source: AppSettings.getVideoDirectory()+"/turtles1.webm"
         muted: true
-        autoPlay: true
+        autoPlay: false
         property bool trailerPicker: false
 
         onStopped: { player.source = swapSource(); }

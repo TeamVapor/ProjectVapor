@@ -1,20 +1,12 @@
-var jacksTag = "DRSANCHEZ: ";
-var component;
-var object;
-
-
 //will read computer name later and use as user tag
 //e.g. DRSANCHEZ: Some Text
-function messageInput()
+function messageInput( username, message, container)
 {
-    var messageText = textInput.text.toString();
-
-    if (messageText != "")
+    if (message !== "")
     {
-        textContainer.insert(0, jacksTag.toString());
-        textContainer.insert(jacksTag.length, messageText.toString());
-        textContainer.insert(jacksTag.length + messageText.length, "\n");
-        textInput.text = "";
+        container.text += username.toString() +': ';
+        container.text += message;
+        //container.insert(username.length + message.length, "\n");
     }
 }
 

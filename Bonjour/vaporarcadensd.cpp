@@ -4,6 +4,7 @@ VaporArcadeNSD::VaporArcadeNSD(QObject *parent, QString Username) :
     QObject(parent)
 {
     connect(&mChatBrowser,SIGNAL(recordsChanged()),this,SLOT(userRecordsChanged()));
+    connect(&mChatBrowser,SIGNAL(resolvedRecord(QHostInfo,int)),this,SLOT(resolvedRecord(QHostInfo,int)));
     connect(&mGameBrowser,SIGNAL(recordsChanged()),this,SLOT(gameRecordsChanged()));
     mChatBrowser.setLocalName(Username);
     mChatBrowser.registerService("Vapor Arcade Chat","_vaporarcade_chat._tcp",0);
@@ -34,6 +35,30 @@ void VaporArcadeNSD::gameRecordsChanged()
 
 }
 
+QMultiHash<QPair<QHostAddress,int>, QString> VaporArcadeNSD::getRecordAdresses()
+{
+    return mAddressList;
+}
+
+void VaporArcadeNSD::resolveRecords()
+{
+    if(mCurrentRecord < mUserList.length())
+    {
+        mChatBrowser.resolveServiceNameContains(mUserList.at(mCurrentRecord).toString());
+    }
+}
+
+void VaporArcadeNSD::resolvedRecord(QHostInfo hostinfo, int port)
+{
+    foreach(const QHostAddress& addr, hostinfo.addresses())
+    {
+        mAddressList.insert(QPair<QHostAddress,int>(QHostAddress(addr),port), mUserList.at(mCurrentRecord).toString());
+    }
+    mCurrentRecord++;
+    resolveRecords();
+}
+
+
 void VaporArcadeNSD::setContext(QQmlContext *context)
 {
     mContext = context;
@@ -53,10 +78,14 @@ void VaporArcadeNSD::startGameLobby(QString lobbyname)
 void VaporArcadeNSD::userRecordsChanged()
 {
     mUserList.clear();
+    mAddressList.clear();
+    mCurrentRecord = 0;
     QStringList names = mChatBrowser.getServiceNames();
     foreach(QString  name, names)
     {
         mUserList.append(name.left(name.indexOf(" on ")));
     }
     mContext->setContextProperty("NSDUserList",QVariant::fromValue(mUserList));
+    if(mUserList.length() > 0)
+        resolveRecords();
 }

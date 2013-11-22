@@ -168,7 +168,6 @@ ZoomItem
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             color: "transparent"
-
             KeyNavigation.left: gameBanner
             KeyNavigation.right: userListContainer
             KeyNavigation.up: backButton

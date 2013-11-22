@@ -112,7 +112,10 @@ VaporRectangle
             KeyNavigation.left: inputContainer
          //   KeyNavigation.up: textAreaContainer
 
-            onClicked: Handler.messageInput();
+            onClicked: {
+
+                Handler.messageInput(AppSettings.getUserName(), textInput.text, textContainer);
+            }
         }
     }//end send button
 
