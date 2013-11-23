@@ -11,6 +11,8 @@ ZoomItem
     z: parent.z + 1
     color: base
 
+    property string lobbyName: ""
+
     function setDefaultFocus()
     {
         userListContainer.focus = true;
@@ -253,7 +255,7 @@ ZoomItem
                 height: parent.height * 0.95
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Play Game"
+                text: "Start Lobby"
 
                 //need to reset these once center piece of
                 //right hand screen is determined
@@ -267,8 +269,12 @@ ZoomItem
                     navigationButtonContainer.backButtonPressed = false;
                     netLobbyContainer.visible = false;
                     zoomsurface.zoomOutToFull();
-                    NSDServices.startGameLobby("Vapor Lobby");
+                    vaporInputDialog.setDialogMessage("Please enter a lobby name.");
+                    vaporInputDialog.show(bookshelf, lobbyName);
+                    //working on interfacing input dialog to return userdata
+                    vaporInputDialog.accepted.connect(openGameLobby);
                 }
+
             }
         }
 
@@ -317,7 +323,13 @@ ZoomItem
         else
         {
             zoomsurface.zoomToItemTopRight(bookshelf);
-            bookshelf.focus = true;
+            //bookshelf.focus = true;
         }
+    }
+
+
+    function openGameLobby()
+    {
+        NSDServices.startGameLobby(lobbyName);
     }
 }

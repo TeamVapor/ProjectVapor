@@ -32,7 +32,8 @@ RESOURCES += \
     ArtResources.qrc
 
 OTHER_FILES += \
-    qml/ProjectVapor/ChatHandler.js
+    qml/ProjectVapor/ChatHandler.js \
+    qml/ProjectVapor/SettingsMenu.qml
 
 HEADERS += \
     qnsdmanager.h \

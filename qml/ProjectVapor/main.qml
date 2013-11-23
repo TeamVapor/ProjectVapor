@@ -17,6 +17,9 @@ Rectangle {
     property var gameLobby: undefined
     property var settingsMenu: undefined
     property var poster: undefined
+    property var vaporMessageDialog: undefined
+    property var vaporInputDialog: undefined
+    property var vaporNavigationBar: undefined
     property int shelfcount: 0
     property int screenwidth: ScreenWidth
     property int screenheight: ScreenHeight
@@ -101,11 +104,17 @@ Rectangle {
         gameLobby = ZoomSurface.addItem(zoomsurface, "GameLobby.qml", screenwidth, screenheight, 0, 0);
         gameLobby.z = 100;
         gameLobby.visible = false;
-        settingsMenu = ZoomSurface.addItem(zoomsurface, "ZsnesSettings.qml", screenwidth, screenheight, 0, 0);
+        settingsMenu = ZoomSurface.addItem(zoomsurface, "SettingsMenu.qml", screenwidth, screenheight, 0, 0);
         settingsMenu.z = 100;
         settingsMenu.visible = false;
         poster = ZoomSurface.addItem(zoomsurface, "Poster.qml", screenwidth / 3, screenheight / 1.5, screenwidth * 0.2, screenheight * 0.2);
         poster.visible = true;
+        vaporMessageDialog = ZoomSurface.addItem(zoomsurface, "VaporMessageDialog.qml", screenwidth * 0.35, screenheight * 0.3, screenwidth * 0.32, screenheight * 0.35);
+        vaporMessageDialog.visible = false;
+        vaporInputDialog = ZoomSurface.addItem(zoomsurface, "VaporInputDialog.qml", screenwidth * 0.35, screenheight * 0.3, screenwidth * 0.32, screenheight * 0.35);
+        vaporInputDialog.visible = false;
+        vaporNavigationBar = ZoomSurface.addItem(zoomsurface, "VaporNavigationBar.qml", screenwidth, screenheight * 0.05, 0, screenheight * 0.95);
+        vaporNavigationBar.visible = false;
         emuLauncher.setEmulatorSystemDir(AppSettings.getEmulatorDirectory());
         emuLauncher.setRomsDir(AppSettings.getRomDirectory());
         zoomsurface.scaledOutValue = screenwidth/zoomsurface.width;

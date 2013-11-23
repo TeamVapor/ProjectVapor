@@ -12,8 +12,8 @@ VaporRectangle
     color: "transparent"
     pressable: false
 
-    //KeyNavigation.up: textAreaContainer
-    //KeyNavigation.left: lobbyList
+    property alias button: sendButton
+    property alias userInput: textInput.text
 
     Keys.onReturnPressed:
     {
@@ -36,8 +36,6 @@ VaporRectangle
         anchors.left: parent.left
         color: "transparent"
 
-        //begin text input bar
-        //need to modularize for keyboard input
         VaporRectangle
         {
             id: inputContainer
@@ -56,7 +54,6 @@ VaporRectangle
             }
 
             KeyNavigation.right: sendButton
-         //   KeyNavigation.up: textAreaContainer
 
             TextEdit
             {
@@ -85,8 +82,6 @@ VaporRectangle
                     inputContainer.focus = true;
                     event.accepted = true;
                 }
-
-                //on pressed, open onscreenkeyboard
             }
         }
     }//end text input bar
@@ -110,10 +105,9 @@ VaporRectangle
             anchors.verticalCenter: parent.verticalCenter
             text: "Send"
             KeyNavigation.left: inputContainer
-         //   KeyNavigation.up: textAreaContainer
 
-            onClicked: {
-
+            onClicked:
+            {
                 Handler.messageInput(AppSettings.getUserName(), textInput.text, textContainer);
             }
         }
