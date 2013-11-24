@@ -30,7 +30,8 @@ void ApplicationSettings::writeSettingsFile(QDir&  dir)
                    "\"\nRomDir=\"" + mRomDirectory +
                    "\"\nCoverDir=\"" + mCoverDirectory +
                    "\"\nPosterDir=\"" + mPosterDirectory +
-                   "\"\nVideoDir=\"" + mVideoDirectory + "\"").toLocal8Bit());
+                   "\"\nVideoDir=\"" + mVideoDirectory + "\"").toLocal8Bit() +
+                   "\"\nUseNetworkDiscovery=\"\"");
     settings.close();
 }
 
@@ -55,4 +56,6 @@ void ApplicationSettings::loadSettings(QDir& dir)
     mPosterDirectory = mPosterDirectory.split('=')[1].replace("\"","");
     mVideoDirectory = strlst.at(5);
     mVideoDirectory = mVideoDirectory.split('=')[1].replace("\"","");
+    mUseNetworkDiscovery = !(strlst.at(6).split('=')[1].replace("\"","") == "false");
+    qDebug() << mUseNetworkDiscovery;
 }

@@ -11,6 +11,8 @@ QML_IMPORT_PATH =
 # CONFIG += mobility
 # MOBILITY +=
 
+TARGET = VaporArcade
+
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
     Bonjour/bonjourserviceresolver.cpp \

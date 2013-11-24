@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-ZoomItem {
+VaporRectangle {
 
     //property alias bookshelfBG: bookshelfBG
     id: bookshelfMain
@@ -111,7 +111,7 @@ ZoomItem {
         }
         else if(event.key == Qt.Key_Backspace) {
             zoomsurface.zoomOutToFull();
-            shelfGrid.currentItem.focus = false;
+            //shelfGrid.currentItem.focus = false;
             shelfGrid.focus = false;
             bookshelfMain.focus = true;
             navigatingGames = false;

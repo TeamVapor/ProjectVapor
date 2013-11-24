@@ -1,7 +1,7 @@
 import QtQuick 2.0
 
 //refactor restart
-ZoomItem
+VaporRectangle
 {
     id: settingsContainer
     width: 0

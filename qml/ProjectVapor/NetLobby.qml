@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import './ChatHandler.js' as Handler
 
-ZoomItem
+VaporRectangle
 {
     id: netLobbyContainer
     width: 1920 //width: 0 //parent.width

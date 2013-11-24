@@ -4,7 +4,7 @@ import QtQuick.Window 2.1
 //on use, set dialog message
 //then call show and pass the previous focus as parameter
 
-ZoomItem
+VaporRectangle
 {
     id: vaporDialogContainer
     width: 0

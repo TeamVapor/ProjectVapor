@@ -14,7 +14,7 @@ public:
     Q_INVOKABLE QString getCoverDirectory(){return mCoverDirectory;}
     Q_INVOKABLE QString getPosterDirectory(){return mPosterDirectory;}
     Q_INVOKABLE QString getVideoDirectory(){return mVideoDirectory;}
-
+    Q_INVOKABLE bool    getUseNSD(){return mUseNetworkDiscovery;}
 public slots:
     void setUserName(QString username){mUserName = username;}
     void setEmulatorDirectory(QString emulator_dir){mEmulatorDirectory = emulator_dir;}
@@ -22,7 +22,7 @@ public slots:
     void setCoverDirectory(QString cover_dir){mCoverDirectory = cover_dir;}
     void setPosterDirectory(QString poster_dir){mPosterDirectory = poster_dir;}
     void setVideoDirectory(QString video_dir){mVideoDirectory = video_dir;}
-
+    void setUseNSD(bool use_nsd){mUseNetworkDiscovery = use_nsd;}
 
 private:
     QString mUserName;
@@ -31,7 +31,7 @@ private:
     QString mCoverDirectory;
     QString mPosterDirectory;
     QString mVideoDirectory;
-
+    bool    mUseNetworkDiscovery;
     void writeSettingsFile(QDir &dir);
     void loadSettings(QDir &dir);
 

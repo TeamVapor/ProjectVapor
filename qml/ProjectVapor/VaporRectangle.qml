@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 
-Rectangle
+ZoomItem
 {
     id: vaporRect
 
@@ -143,7 +143,7 @@ Rectangle
             from: "selected"; to: "pressed"
             ParallelAnimation
             {
-                NumberAnimation { target: vaporGlow; property: "color"; from: light; to: shadow; duration: 50; easing.type: Easing.InOutQuad }
+                //NumberAnimation { target: vaporGlow; property: "color"; from: light; to: shadow; duration: 50; easing.type: Easing.InOutQuad }
             }
         },
 
@@ -152,7 +152,7 @@ Rectangle
             from: "pressed"; to: "selected"
             ParallelAnimation
             {
-                NumberAnimation { target: vaporGlow; property: "color"; from: shadow; to: light; duration: 50; easing.type: Easing.InOutQuad }
+              //  NumberAnimation { target: vaporGlow; property: "color"; from: shadow; to: light; duration: 50; easing.type: Easing.InOutQuad }
             }
         }
     ]

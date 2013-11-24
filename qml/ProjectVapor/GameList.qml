@@ -20,36 +20,6 @@ ListModel{
         game: ""
     }
     ListElement{
-        isGame: false
-        display: "B"
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
-        system: ""
-        game: ""
-    }
-    ListElement{
         isGame: true
         display: ""
         system: ""
@@ -130,24 +100,6 @@ ListModel{
     ListElement{
         isGame: false
         display: "E"
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
-        system: ""
-        game: ""
-    }
-    ListElement{
-        isGame: true
-        display: ""
         system: ""
         game: ""
     }

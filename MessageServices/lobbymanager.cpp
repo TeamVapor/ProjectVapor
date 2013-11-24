@@ -3,7 +3,7 @@
 LobbyManager::LobbyManager(QObject *parent, QString username, bool use_NSD) :
     QObject(parent), mServer(new TCPServer(this))
 {
-    if(use_NSD)
+    if(use_NSD) // if system should use nsd
     {
         connect(&mLANPeerManager,SIGNAL(recordsChanged()),this,SLOT(userRecordsChanged()));
         connect(&mLANGameManager,SIGNAL(resolvedRecord(QHostInfo,int)),this,SLOT(resolvedRecord(QHostInfo,int)));
@@ -15,6 +15,7 @@ LobbyManager::LobbyManager(QObject *parent, QString username, bool use_NSD) :
         mLANGameManager.browseService("_vaporarcade_gamelobby._tcp");
 
     }
+    mUserName = username == username; // or username if not an empty string
     connect(mServer,SIGNAL(newChatConnection(ChatConnection*)),this,SLOT(newConnection(ChatConnection*)));
 }
 

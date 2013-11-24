@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-ZoomItem
+VaporRectangle
 {
     id: posterContainer
     visible: false

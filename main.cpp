@@ -13,8 +13,22 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QScreen * pscreen = app.primaryScreen();
     QtQuick2ApplicationViewer viewer;
-    int screen_width = pscreen->geometry().width();
-    int screen_height = pscreen->geometry().height();
+    viewer.setScreen(pscreen);
+    bool showexpanded(true);
+    //showexpanded = false; // Uncomment for FULLSCREEN
+    int screen_width;
+    int screen_height;
+    if(!showexpanded)
+    {
+        screen_width = pscreen->size().width();
+        screen_height = pscreen->size().height();
+    }
+    else
+    {
+        screen_width = pscreen->geometry().width();
+        screen_height = pscreen->geometry().height();
+    }
+
     viewer.rootContext()->setContextProperty("ScreenWidth", screen_width);
     viewer.rootContext()->setContextProperty("ScreenHeight",screen_height);
     ApplicationSettings settings;
@@ -23,7 +37,9 @@ int main(int argc, char *argv[])
     vpnsd.setContext(viewer.rootContext());
     qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
-    viewer.showFullScreen();
-    //viewer.showExpanded();
+    if(!showexpanded)
+        viewer.showFullScreen();
+    else
+        viewer.showExpanded();
     return app.exec();
 }

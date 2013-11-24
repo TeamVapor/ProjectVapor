@@ -72,8 +72,8 @@ Rectangle {
         // fill gameList from SQL database
         gameList = fetchGamesLibrary();
         calculateScreenSize();
-        var zoomsurface_width = homeScreen.screenwidth * homeScreen.screenmultiplier;
-        var zoomsurface_height = homeScreen.screenheight * homeScreen.screenmultiplier;
+        var zoomsurface_width = homeScreen.screenwidth * 2;
+        var zoomsurface_height = homeScreen.screenheight * 2;
         zoomsurface = ZoomSurface.createInstance(homeScreen,ScreenWidth,ScreenHeight,zoomsurface_width,zoomsurface_height,0,0,false);
         zoomsurface.setBackgroundImage("qrc:/images/wall_texture.jpg");
         zoomsurface.backgroundImage.fillMode = Image.Tile;
@@ -105,9 +105,9 @@ Rectangle {
         gameLobby.z = 100;
         gameLobby.visible = false;
         settingsMenu = ZoomSurface.addItem(zoomsurface, "SettingsMenu.qml", screenwidth, screenheight, 0, 0);
-        settingsMenu.z = 100;
+        settingsMenu.z = 100;screenwidth
         settingsMenu.visible = false;
-        poster = ZoomSurface.addItem(zoomsurface, "Poster.qml", screenwidth / 3, screenheight / 1.5, screenwidth * 0.2, screenheight * 0.2);
+        poster = ZoomSurface.addItem(zoomsurface, "Poster.qml", zoomsurface_width*.25, zoomsurface_height* .4, zoomsurface_width * .01, zoomsurface_height * .01);
         poster.visible = true;
         vaporMessageDialog = ZoomSurface.addItem(zoomsurface, "VaporMessageDialog.qml", screenwidth * 0.35, screenheight * 0.3, screenwidth * 0.32, screenheight * 0.35);
         vaporMessageDialog.visible = false;
