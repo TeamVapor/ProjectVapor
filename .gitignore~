@@ -22,3 +22,6 @@ Makefile
 
 #QtCreator
 *.autosave
+
+#linux base
+*.*~

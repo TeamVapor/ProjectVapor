@@ -11,7 +11,8 @@
 *.dylib
 
 # Qt-es
-
+ProjectVapor
+Vapor Arcade
 *.pro.user
 *.pro.user.*
 moc_*.cpp

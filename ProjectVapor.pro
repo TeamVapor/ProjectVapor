@@ -19,7 +19,12 @@ SOURCES += main.cpp \
     Bonjour/qnsdmanager.cpp \
     Bonjour/vaporarcadensd.cpp \
     Settings/applicationsettings.cpp \
-    Emulator/EmulatorCore.cpp
+    Emulator/EmulatorCore.cpp \
+    MessageServices/tcpserver.cpp \
+    MessageServices/networkuser.cpp \
+    MessageServices/networklobby.cpp \
+    MessageServices/lobbymanager.cpp \
+    MessageServices/chatconnection.cpp
 
 # Installation path
 # target.path =
@@ -45,7 +50,14 @@ HEADERS += \
     Emulator/EmulatorLauncher.h \
     Bonjour/vaporarcadensd.h \
     Settings/applicationsettings.h \
-    Emulator/EmulatorCore.h
+    Emulator/EmulatorCore.h \
+    MessageServices/tcpserver.h \
+    MessageServices/networkuser.h \
+    MessageServices/networklobby.h \
+    MessageServices/lobbymanager.h \
+    MessageServices/iuser.h \
+    MessageServices/ilobby.h \
+    MessageServices/chatconnection.h
 
 CONFIG += c++11
 
