@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     MessageServices/networkuser.cpp \
     MessageServices/networklobby.cpp \
     MessageServices/lobbymanager.cpp \
-    MessageServices/chatconnection.cpp
+    MessageServices/chatconnection.cpp \
+    Emulator/EmulatorSettingsReader.cpp
 
 # Installation path
 # target.path =
@@ -59,7 +60,8 @@ HEADERS += \
     MessageServices/lobbymanager.h \
     MessageServices/iuser.h \
     MessageServices/ilobby.h \
-    MessageServices/chatconnection.h
+    MessageServices/chatconnection.h \
+    Emulator/EmulatorSettingsReader.h
 
 CONFIG += c++11
 

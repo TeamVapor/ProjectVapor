@@ -1,7 +1,12 @@
 #ifndef EMULATORLAUNCHER_H
 #define EMULATORLAUNCHER_H
 #include <QObject>
+#include <QString>
+#include <QHash>
+#include <QPair>
+#include <QList>
 #include "EmulatorCore.h"
+#include "EmulatorSettingsReader.h"
 /******************************************************************************
 * Author: Aaron Lindberg
 * Class: EmulatorLauncher
@@ -35,7 +40,7 @@ public:
 * the path to the game to load.
 ******************************************************************************/
     Q_INVOKABLE void start(QString system,QString emuFile, QString game)
-    {mEmulatorCore.loadEmulator(system,emuFile,game);}
+    {mEmulatorCore.loadEmulator(mEmulatorDir + "/" + system,emuFile, mRomsDir + "/" +game);}
 /******************************************************************************
 *	start
 *** OVERVIEW **
@@ -45,7 +50,7 @@ public:
 *   Takes a emulator systrm and path to the game.
 ******************************************************************************/
     Q_INVOKABLE void start(const QString & system, const QString & game)
-    {mEmulatorCore.start(system,game);}
+    {mEmulatorCore.start(mEmulatorDir + "/" + system,mRomsDir + "/" +game);}
 /******************************************************************************
 *	setRomsDir
 *** OVERVIEW **
@@ -54,7 +59,7 @@ public:
 * 	Take a QString by constant reference to set the executable path to.
 ******************************************************************************/
     Q_INVOKABLE void setRomsDir(const QString& RomsDir)
-    { mEmulatorCore.setRomsDir(RomsDir);}
+    { mRomsDir = RomsDir;}
 /******************************************************************************
 *	setEmulatorSystemDir
 *** OVERVIEW **
@@ -63,7 +68,7 @@ public:
 * 	Take a QString by constant reference to set the executable path to.
 ******************************************************************************/
     Q_INVOKABLE void setEmulatorSystemDir(const QString& EmuDir)
-    {mEmulatorCore.setEmulatorSystemDir(EmuDir);}
+    {mEmulatorDir = EmuDir;}
 /******************************************************************************
 *	stop
 *** OVERVIEW **
@@ -74,11 +79,19 @@ public:
         mEmulatorCore.stop();
     }
 
+    Q_INVOKABLE void readSettings(QString system, QString emuPyFile)
+    {
+        mSettingsReader.ReadSettings(mEmulatorDir + "/" + system, emuPyFile);
+    }
 signals:
     void MultipleEmulatorsFound(QStringList emuList);
     void NoEmulatorsFound(QString directory);
-    void BadPyDataProcessed();
+    void BadPyDataProcessed(QString ErrMsg);
+    void SettingsLoaded(SettingsHash hash);
 private:
+    QString mEmulatorDir;
+    QString mRomsDir;
     EmulatorCore mEmulatorCore;
+    EmulatorSettingsReader mSettingsReader;
 };
 #endif
