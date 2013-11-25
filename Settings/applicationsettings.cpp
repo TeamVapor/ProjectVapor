@@ -2,11 +2,12 @@
 #include <QDir>
 #include <QDebug>
 ApplicationSettings::ApplicationSettings(QObject *parent) :
-    QObject(parent)
+    QObject(parent), mUserName(""), mEmulatorDirectory(""), mRomDirectory(""), mCoverDirectory(""), mPosterDirectory(""),
+    mVideoDirectory(""), mUseNetworkDiscovery(true)
 {
 
     //check if file exists
-    QString app_data_path(QDir::homePath() + '/' + ".vaporarcade/");
+    QString app_data_path(QDir::homePath() + '/' + ".config/VaporArcade");
     QDir dir(app_data_path);
     qDebug() << app_data_path;
     if(!dir.exists("user.ini"))
@@ -21,17 +22,19 @@ ApplicationSettings::ApplicationSettings(QObject *parent) :
 void ApplicationSettings::writeSettingsFile(QDir&  dir)
 {
     dir.cdUp();
-    dir.mkdir(".vaporarcade");
-    dir.cd(".vaporarcade");
+    dir.mkdir("VaporArcade");
+    dir.cd("VaporArcade");
     QFile settings(dir.absolutePath() + "/user.ini",this);
     settings.open(QIODevice::WriteOnly);
+    QString bool_out = (mUseNetworkDiscovery ? "true":"false");
+    // write out each value on its own line
     settings.write(QString("Username=\"" + mUserName +
                    "\"\nEmulatorDir=\"" + mEmulatorDirectory +
                    "\"\nRomDir=\"" + mRomDirectory +
                    "\"\nCoverDir=\"" + mCoverDirectory +
                    "\"\nPosterDir=\"" + mPosterDirectory +
                    "\"\nVideoDir=\"" + mVideoDirectory + "\"").toLocal8Bit() +
-                   "\"\nUseNetworkDiscovery=\"\"");
+                   "\nUseNetworkDiscovery=\""+ bool_out.toLocal8Bit() + "\"");
     settings.close();
 }
 
@@ -57,5 +60,4 @@ void ApplicationSettings::loadSettings(QDir& dir)
     mVideoDirectory = strlst.at(5);
     mVideoDirectory = mVideoDirectory.split('=')[1].replace("\"","");
     mUseNetworkDiscovery = !(strlst.at(6).split('=')[1].replace("\"","") == "false");
-    qDebug() << mUseNetworkDiscovery;
 }

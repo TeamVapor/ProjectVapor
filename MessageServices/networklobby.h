@@ -1,13 +1,15 @@
 #ifndef NETWORKLOBBY_H
 #define NETWORKLOBBY_H
 
-class QHostAddress;
+
 #include "ilobby.h"
+class QHostAddress;
 class NetworkLobby : public iLobby
 {
     Q_OBJECT
 public:
-    explicit NetworkLobby(QObject *parent = 0, QString name = "", int type = 0);
+    NetworkLobby(QObject *parent = 0, QString name = "", int type = 0);
+    ~NetworkLobby();
     void sendMessage(QString message);
     QString getLobbyName();
     int getLobbyType();
@@ -24,7 +26,8 @@ public slots:
 
 
 protected:
-
+    void anounceUserAdded();
+    void anounceUserRemoved(QString exit_verb);
 
 };
 

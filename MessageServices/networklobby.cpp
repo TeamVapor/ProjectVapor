@@ -16,6 +16,15 @@ void NetworkLobby::addUser(iUser *user)
         mLobbyUsers.append(user);
 }
 
+void NetworkLobby::anounceUserAdded()
+{
+
+}
+
+void NetworkLobby::anounceUserRemoved(QString exit_verb)
+{
+
+}
 
 void NetworkLobby::removeUser(iUser *user)
 {
@@ -69,4 +78,9 @@ void NetworkLobby::sendMessage(QString message)
 void NetworkLobby::setName(QString name)
 {
     mName = name;
+}
+
+NetworkLobby::~NetworkLobby()
+{
+
 }

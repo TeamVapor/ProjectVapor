@@ -4,7 +4,7 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include <QHostAddress>
+class    QHostInfo;
 #include <QString>
 #include <QTcpSocket>
 #include <QTime>
@@ -41,7 +41,7 @@ public:
     };
 
     ChatConnection(QObject *parent = 0, QString hostname = "");
-
+    ~ChatConnection();
     QString name() const;
     bool sendMessage(const QString &message);
 

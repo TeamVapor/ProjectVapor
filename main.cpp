@@ -8,6 +8,7 @@
 #include <QQmlComponent>
 #include "Bonjour/vaporarcadensd.h"
 #include "Settings/applicationsettings.h"
+#include "MessageServices/lobbymanager.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -25,16 +26,14 @@ int main(int argc, char *argv[])
     }
     else
     {
-        screen_width = pscreen->geometry().width();
-        screen_height = pscreen->geometry().height();
+        screen_width = pscreen->availableGeometry().width();
+        screen_height = pscreen->availableGeometry().height();
     }
-
     viewer.rootContext()->setContextProperty("ScreenWidth", screen_width);
     viewer.rootContext()->setContextProperty("ScreenHeight",screen_height);
     ApplicationSettings settings;
-    VaporArcadeNSD vpnsd(&app, settings.getUserName());
+    LobbyManager lman(&app, viewer.rootContext(), settings.getUserName(),settings.getUseNSD());
     viewer.rootContext()->setContextProperty("AppSettings",&settings);
-    vpnsd.setContext(viewer.rootContext());
     qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
     if(!showexpanded)

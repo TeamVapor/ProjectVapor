@@ -56,6 +56,17 @@ void QNSDManager::registerService(QString service_name, QString service_type, in
                                                                  service_type, QString()),port);
 }
 
+bool QNSDManager::resloveServiceAtIndex(uint index)
+{
+    // gaurd statement on records list
+    if(index >= mNSDRecords.length())
+        return false;
+    // grab and resolve record, return true
+    const BonjourRecord & record(mNSDRecords.at(index));
+    mNSDResolver->resolveBonjourRecord(record);
+    return true;
+}
+
 void QNSDManager::resolveServiceByName(QString exact_name)
 {
     foreach(BonjourRecord record, mNSDRecords)
@@ -100,6 +111,8 @@ void QNSDManager::resolveServiceNameContains(QString contained_within)
 
     }
 }
+
+
 void QNSDManager::resolveSercviceWithTypeAndNameContains(QString type, QString name_contains)
 {
     foreach(BonjourRecord record, mNSDRecords)

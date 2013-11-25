@@ -34,6 +34,13 @@ protected:
 
 
     explicit iLobby(QObject *parent = 0){ Q_UNUSED(parent)}
+    ~iLobby()
+    {
+        mName = "";
+        mLobbyType = 0;
+        mLobbyUsers.clear();
+        mChatLog.clear();
+    }
     virtual void anounceUserAdded() = 0;
     virtual void anounceUserRemoved(QString exit_verb) = 0;
 };

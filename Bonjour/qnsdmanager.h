@@ -33,6 +33,7 @@ public:
     void resolveServciceByType(QString type, QString name);
     void resolveServiceNameContains(QString contained_within);
     void resolveSercviceWithTypeAndNameContains(QString type, QString name_contains);
+    bool resloveServiceAtIndex(uint index);
 
     ~QNSDManager();
 

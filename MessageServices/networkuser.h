@@ -1,15 +1,16 @@
 #ifndef NETWORKUSER_H
 #define NETWORKUSER_H
 
-#include "iuser.h"
 class NetworkLobby;
-class QHostAddress;
-#include "chatconnection.h"
+
+#include "iuser.h"
+class ChatConnection;
+#include <QHostInfo>
 class NetworkUser : public iUser
 {
     Q_OBJECT
 public:
-    explicit NetworkUser(QObject *parent = 0, QString name = "", QHostAddress addr =  QHostAddress(), int port = 0);
+    NetworkUser(QObject *parent = 0, QString name = "", QHostInfo info =  QHostInfo(), int port = 0);
     QHostAddress getAddress();
     void sendMessage(QString message);
     int getPort();
@@ -19,11 +20,10 @@ signals:
 
 public slots:
     void setPort(int port);
-    void setAddress(QHostAddress addr);
     void setConnection( ChatConnection * connection);
 protected:
     ChatConnection * mConnection;
-    QHostAddress     mAddress;
+    QHostInfo        mHostInfo;
     int              mPort;
 
 };

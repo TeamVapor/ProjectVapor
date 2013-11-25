@@ -5,6 +5,7 @@ static const int PongTimeout = 60 * 1000;
 static const int PingInterval = 5 * 1000;
 static const char SeparatorToken = '$';
 #include <QTimerEvent>
+#include <QHostInfo>
 ChatConnection::ChatConnection(QObject *parent,QString hostname) :
     QTcpSocket(parent)
 {
@@ -243,3 +244,12 @@ void ChatConnection::processData()
 
 }
 
+ChatConnection::~ChatConnection()
+{
+    mPingTimer.stop();
+    QObject::disconnect(this, SIGNAL(readyRead()), this, SLOT(processReadyRead()));
+    QObject::disconnect(this, SIGNAL(disconnected()), &mPingTimer, SLOT(stop()));
+    QObject::disconnect(&mPingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
+    QObject::disconnect(this, SIGNAL(connected()),
+                     this, SLOT(sendEnteredLobbyMessage()));
+}
