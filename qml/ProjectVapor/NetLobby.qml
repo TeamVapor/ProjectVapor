@@ -12,10 +12,12 @@ VaporRectangle
     color: base
     objectName: "NetLobby"
     property string lobbyName: ""
-    function userConnected(message)
+    // message recieved from message system
+    function submitMessage(message)
     {
-        textContainer.text += message;
+        textContainer.text += (message + '\n');
     }
+
 
     function setDefaultFocus()
     {

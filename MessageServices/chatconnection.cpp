@@ -13,9 +13,10 @@ ChatConnection::ChatConnection(QObject *parent, QString hostname, QHostInfo info
     mCurrentType(Undefined),mCurrentTypeByteCount(-1), mTimerID(0)
 {
     mPingTimer.setInterval(PingInterval);
+    info.setHostName(hostname);
     connect(this, SIGNAL(readyRead()), this, SLOT(processReadyRead()));
     connect(this, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
-    connect(&mPingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
+    //connect(&mPingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
     connect(this,SIGNAL(connected()),this,SLOT(sendConnectionEstablished()));
 }
 
@@ -45,6 +46,8 @@ bool ChatConnection::sendMessage(const QString &message)
 {
     QByteArray msg = message.toUtf8();
     QByteArray data = "<M> " + QByteArray::number(msg.size()) + ' ' + msg;
+    if(!isOpen())
+        open(QIODevice::ReadWrite);
     return write(data) == data.size();
 }
 
@@ -129,7 +132,8 @@ void ChatConnection::sendPing()
         abort();
         return;
     }
-
+    if(!isOpen())
+        open(QIODevice::ReadWrite);
     write("<P> hello?");
 }
 
@@ -139,6 +143,8 @@ void ChatConnection::sendConnectionEstablished()
     QString username = mHostName.split("$$")[0];
     QByteArray entered_lobby = username.toUtf8() + TerminationToken;
     QByteArray message_w_header = "<E> " + QByteArray::number(entered_lobby.size()) + ' ' + entered_lobby;
+    if(!isOpen())
+        open(QIODevice::ReadWrite);
     write(message_w_header);
 }
 
@@ -233,18 +239,13 @@ void ChatConnection::processData()
 
     switch (mCurrentType) {
     case LobbyMessage:
-        emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
+        //emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
         break;
     case VaporPing:
-        sendConnectionEstablished();
+        //sendConnectionEstablished();
         break;
     case VaporPong:
-    {
-        write("<O> I'm Here");
-        break;
-    }
-    case HelloLobby:
-        emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
+        //write("<O> I'm Here");
         break;
     default:
         break;

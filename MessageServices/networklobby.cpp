@@ -82,5 +82,5 @@ void NetworkLobby::setName(QString name)
 
 NetworkLobby::~NetworkLobby()
 {
-
+    mLobbyUsers.clear();
 }

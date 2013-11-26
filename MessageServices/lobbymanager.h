@@ -53,7 +53,7 @@ private slots:
 private:
     bool awareOfUserAlready(QString user);
     ChatConnection * alreadyWasConnected(ChatConnection * connection);
-    void findUsersThatLeft(const QStringList &records);
+    QStringList findUsersThatLeft(const QStringList &records);
     void removeConnection(ChatConnection *connection);
     QString serviceNameToUsername(QString hostname);
 
