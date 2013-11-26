@@ -206,6 +206,16 @@ void LobbyManager::newMessage(QString message, int type)
                                       Q_ARG(QVariant, QVariant(username + " disconnected from VaporChat Main Lobby.")));
             break;
         }
+        case ChatConnection::LobbyMessage:
+        {
+            int last_space_i(message.lastIndexOf(' '));
+            message.chop(1);
+            QString username(message.mid(last_space_i));
+            QMetaObject::invokeMethod(mNetLobby, "submitMessage",
+                          Q_RETURN_ARG(QVariant, returnedValue),
+                              Q_ARG(QVariant, QVariant(message)));
+            break;
+        }
         default:{break;}
     }
 }
@@ -257,7 +267,11 @@ void LobbyManager::removeConnection(ChatConnection *connection)
    {
        if(user->getConnection() == connection)
        {
+           if(!mLANUsers.removeAll(user));
+           {
+           qDebug() << "failed to remove connection to " << connection->name();
            connection->close();
+           }
        }
    }
 
@@ -273,10 +287,14 @@ void LobbyManager::resolveTimedOutUser()
 
 }
 
-void LobbyManager::sendMessage(const QString &message)
+void LobbyManager::sendMessage(QString message)
 {
     if (message.isEmpty())
         return;
+    foreach(NetworkUser * usr, mLANUsers)
+    {
+        usr->sendMessage(mUserName +':$'+message);
+    }
 }
 
 

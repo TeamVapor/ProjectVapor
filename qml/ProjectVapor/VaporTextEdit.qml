@@ -109,6 +109,7 @@ VaporRectangle
             onClicked:
             {
                 Handler.messageInput(AppSettings.getUserName(), textInput.text, textContainer);
+                LobbyManager.sendMessage(textInput.text);
             }
         }
     }//end send button

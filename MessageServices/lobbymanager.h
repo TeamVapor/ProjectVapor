@@ -16,7 +16,7 @@ public:
     explicit LobbyManager(QObject *parent = 0, QQmlContext * context = 0, QString username = "", bool use_NSD = true);
     ~LobbyManager();
 
-    void sendMessage(const QString &message);
+
     QString nickName() const;
     bool hasConnection(const QHostAddress &senderIp, int senderPort = -1) const;
     void connectToQML(QQuickItem * root);
@@ -29,7 +29,7 @@ public:
 *
 ************************************************************************/
 Q_INVOKABLE void createGameLobby(QString lobbyname);
-
+Q_INVOKABLE void sendMessage(QString message);
 
 signals:
 

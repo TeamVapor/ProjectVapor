@@ -46,6 +46,7 @@ bool ChatConnection::sendMessage(const QString &message)
 {
     QByteArray msg = message.toUtf8();
     QByteArray data = "<M> " + QByteArray::number(msg.size()) + ' ' + msg;
+    qDebug() << data;
     if(!isOpen())
         open(QIODevice::ReadWrite);
     return write(data) == data.size();
@@ -239,7 +240,7 @@ void ChatConnection::processData()
 
     switch (mCurrentType) {
     case LobbyMessage:
-        //emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
+        emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
         break;
     case VaporPing:
         //sendConnectionEstablished();
