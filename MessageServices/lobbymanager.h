@@ -6,7 +6,8 @@
 class NetworkUser;
 class QQmlContext;
 class NetworkLobby;
-#include "tcpserver.h";
+class QQuickItem;
+#include "tcpserver.h"
 #include "chatconnection.h"
 class LobbyManager : public QObject
 {
@@ -18,12 +19,23 @@ public:
     void sendMessage(const QString &message);
     QString nickName() const;
     bool hasConnection(const QHostAddress &senderIp, int senderPort = -1) const;
+    void connectToQML(QQuickItem * root);
+
+
+
+/************************************************************************
+*Declare QML Interface methods
+*
+*
+************************************************************************/
+Q_INVOKABLE void createGameLobby(QString lobbyname);
+
 
 signals:
-    void newMessage(const QString &from, const QString &message);
-    void newParticipant(const QString &nick);
+
     void participantLeft(const QString &nick);
     void lobbyCreated(const QString & lobbyname, const QString & host);
+    void newUserConnected(QString message);
     void lobbyClosed(const QString & lobbyname, const QString & host);
 
 private slots:
@@ -31,15 +43,16 @@ private slots:
     void connectionError(QAbstractSocket::SocketError socketError);
     void lanUsersUpdated();
     void lanLobbysUpdated();
+    void newMessage(QString message, int type);
     void userRecordResolved(QHostInfo info, int port);
     void gameLobbyResolved(QHostInfo info, int port);
     void resolveTimedOutUser();
     void resolveTimedOutLobby();
     void disconnected();
-    void readyForUse();
 
 private:
     bool awareOfUserAlready(QString user);
+    ChatConnection * alreadyWasConnected(ChatConnection * connection);
     void findUsersThatLeft(const QStringList &records);
     void removeConnection(ChatConnection *connection);
     QString serviceNameToUsername(QString hostname);
@@ -48,6 +61,8 @@ protected:
     QNSDManager             mLANPeerManager;
     QNSDManager             mLANGameManager;
     QString                 mUserName;
+    QString                 mConnectedString;
+    QQuickItem   *          mNetLobby;
     QVariantList            mUserList;
     QVariantList            mGameLobbyList;
     QList <QString>         mCurrentRecordsResolving;

@@ -10,8 +10,12 @@ VaporRectangle
     focus: false
     z: parent.z + 1
     color: base
-
+    objectName: "NetLobby"
     property string lobbyName: ""
+    function userConnected(message)
+    {
+        textContainer.text += message;
+    }
 
     function setDefaultFocus()
     {
@@ -332,4 +336,5 @@ VaporRectangle
     {
         NSDServices.startGameLobby(lobbyName);
     }
+
 }

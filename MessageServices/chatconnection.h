@@ -4,7 +4,7 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-class    QHostInfo;
+#include <QHostInfo>
 #include <QString>
 #include <QTcpSocket>
 #include <QTime>
@@ -40,24 +40,34 @@ public:
         Undefined
     };
 
-    ChatConnection(QObject *parent = 0, QString hostname = "");
+    ChatConnection(QObject *parent = 0, QString hostname = "", QHostInfo info = QHostInfo(), int portnum = 0);
     ~ChatConnection();
-    QString name() const;
+    QString name();
+    void setHostName(QString name){mHostName = name;}
+    QHostInfo getHostInfo();
+    QHostAddress getHostAddress();
+    int getPort();
     bool sendMessage(const QString &message);
+    void setConnectionEstablishedMessage(QString message);
+
+
+public slots:
+    void sendPing();
 
 signals:
     void readyForUse();
-    void newMessage(const QString &from, const QString &message);
+    void newMessage(QString message, int type);
+    void userDisconnected();
 
 protected:
     void timerEvent(QTimerEvent *timerEvent);
 
 private slots:
     void processReadyRead();
-    void sendPing();
-    void sendEnteredLobbyMessage(QString entered_lobby_msg);
-    //void sendGameInvite(QString gamename, QString gamesystem, QString target_user);
 
+    void sendConnectionEstablished();
+    //void sendGameInvite(QString gamename, QString gamesystem, QString target_user);
+    void socketDisconnected();
 
 private:
     int readDataIntoBuffer(int maxSize = MaxBufferSize);
@@ -65,15 +75,17 @@ private:
     bool readProtocolHeader();
     bool hasEnoughData();
     void processData();
-    QString mHostName;
-    QTimer mPingTimer;
-    QTime mPongTime;
-    QByteArray mBuffer;
+
+    QString         mHostName;
+    QHostInfo       mHostInfo;
+    int             mPort;
+    QTimer          mPingTimer;
+    QTime           mPongTime;
+    QByteArray      mBuffer;
     ConnectionState mConnectState;
-    DataType mCurrentType;
-    int mCurrentTypeByteCount;
-    int mTimerID;
-    bool mEnteredLobbyMessageSent;
+    DataType        mCurrentType;
+    int             mCurrentTypeByteCount;
+    int             mTimerID;
 };
 
 #endif

@@ -133,6 +133,12 @@ void QNSDManager::unregisterService()
     mNSDRegistrar = 0;
 }
 
+void QNSDManager::forceStopResolving()
+{
+    mNSDResolver->finishResolving();
+    delete mNSDResolver;
+    mNSDResolver =0;
+}
 
 void QNSDManager::updateRecords(const QList<BonjourRecord> &list)
 {

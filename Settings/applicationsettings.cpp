@@ -9,7 +9,7 @@ ApplicationSettings::ApplicationSettings(QObject *parent) :
     //check if file exists
     QString app_data_path(QDir::homePath() + '/' + ".config/VaporArcade");
     QDir dir(app_data_path);
-    qDebug() << app_data_path;
+    //qDebug() << app_data_path;
     if(!dir.exists("user.ini"))
     {
         // if it doesnt write the blank

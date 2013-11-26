@@ -46,7 +46,7 @@ public:
     ~BonjourServiceResolver();
 
     void resolveBonjourRecord(const BonjourRecord &record);
-
+    void finishResolving();
 signals:
     void bonjourRecordResolved(const QHostInfo &hostInfo, int port);
     void error(DNSServiceErrorType error);

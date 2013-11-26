@@ -52,6 +52,12 @@ void BonjourServiceResolver::cleanupResolve()
     }
 }
 
+
+void BonjourServiceResolver::finishResolving()
+{
+    cleanupResolve();
+}
+
 void BonjourServiceResolver::resolveBonjourRecord(const BonjourRecord &record)
 {
     if (dnssref) {

@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     QtQuick2ApplicationViewer viewer;
     viewer.setScreen(pscreen);
     bool showexpanded(true);
-    //showexpanded = false; // Uncomment for FULLSCREEN
+    showexpanded = false; // Uncomment for FULLSCREEN
     int screen_width;
     int screen_height;
     if(!showexpanded)
@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("AppSettings",&settings);
     qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
+    lman.connectToQML(viewer.rootObject());
     if(!showexpanded)
         viewer.showFullScreen();
     else

@@ -2,12 +2,11 @@
 #include "networklobby.h"
 #include "chatconnection.h"
 #include <QHostInfo>
-NetworkUser::NetworkUser(QObject *parent, QString name, QHostInfo info, int port) :
-    iUser(parent)
+#include <QHostAddress>
+NetworkUser::NetworkUser(QObject *parent, QString name, ChatConnection * connection) :
+    iUser(parent,name), mConnection(connection)
 {
-    mHostInfo = info;
-    mPort = port;
-    mConnection = new ChatConnection(this, name);
+
 }
 
 
@@ -15,31 +14,27 @@ NetworkUser::NetworkUser(QObject *parent, QString name, QHostInfo info, int port
 // getters and setters //
 QHostAddress NetworkUser::getAddress()
 {
-    return mHostInfo.addresses()[0];
+    return mConnection->getHostAddress();
 }
 
 
 ChatConnection * NetworkUser::getConnection()
 {
+
     return mConnection;
 }
 
 int NetworkUser::getPort()
 {
-    return mPort;
+    return mConnection->getPort();
 }
 
 void NetworkUser::setConnection(ChatConnection *connection)
 {
+    if(mConnection)
+        delete mConnection;
     mConnection = connection;
 }
-
-
-void NetworkUser::setPort(int port)
-{
-    mPort = port;
-}
-
 
 
 void NetworkUser::sendMessage(QString message)

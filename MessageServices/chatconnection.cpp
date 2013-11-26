@@ -4,37 +4,45 @@ static const int TransferTimeout = 30 * 1000;
 static const int PongTimeout = 60 * 1000;
 static const int PingInterval = 5 * 1000;
 static const char SeparatorToken = '$';
+static const char TerminationToken = 27;
 #include <QTimerEvent>
 #include <QHostInfo>
-ChatConnection::ChatConnection(QObject *parent,QString hostname) :
-    QTcpSocket(parent)
+#include <QStringList>
+ChatConnection::ChatConnection(QObject *parent, QString hostname, QHostInfo info, int portnum) :
+    QTcpSocket(parent), mHostName(hostname),mHostInfo(info), mPort(portnum), mConnectState(WaitingForLobbyEntered),
+    mCurrentType(Undefined),mCurrentTypeByteCount(-1), mTimerID(0)
 {
-    mHostName = tr("unknown");
-    mConnectState = WaitingForLobbyEntered;
-    mCurrentType = Undefined;
-    mCurrentTypeByteCount = -1;
-    mTimerID = 0;
-    mEnteredLobbyMessageSent = false;
     mPingTimer.setInterval(PingInterval);
-
-    QObject::connect(this, SIGNAL(readyRead()), this, SLOT(processReadyRead()));
-    QObject::connect(this, SIGNAL(disconnected()), &mPingTimer, SLOT(stop()));
-    QObject::connect(&mPingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
-    QObject::connect(this, SIGNAL(connected()),
-                     this, SLOT(sendEnteredLobbyMessage()));
+    connect(this, SIGNAL(readyRead()), this, SLOT(processReadyRead()));
+    connect(this, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
+    connect(&mPingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
+    connect(this,SIGNAL(connected()),this,SLOT(sendConnectionEstablished()));
 }
 
 
-QString ChatConnection::name() const
+
+QHostAddress ChatConnection::getHostAddress()
+{
+    return mHostInfo.addresses()[0];
+}
+
+QHostInfo ChatConnection::getHostInfo()
+{
+    return mHostInfo;
+}
+
+int ChatConnection::getPort()
+{
+
+}
+
+QString ChatConnection::name()
 {
     return mHostName;
 }
 
 bool ChatConnection::sendMessage(const QString &message)
 {
-    if (message.isEmpty())
-        return false;
-
     QByteArray msg = message.toUtf8();
     QByteArray data = "<M> " + QByteArray::number(msg.size()) + ' ' + msg;
     return write(data) == data.size();
@@ -63,20 +71,9 @@ void ChatConnection::processReadyRead()
         mConnectState = ReadingEnteredLobby;
     }
 
-    if (mConnectState == ReadingEnteredLobby) {
-        if (!hasEnoughData())
-            return;
-
-        mBuffer = read(mCurrentTypeByteCount);
-        if (mBuffer.size() != mCurrentTypeByteCount) {
-            abort();
-            return;
-        }
-
-        mHostName = QString(mBuffer) + '@' + peerAddress().toString() + ':'
-                   + QString::number(peerPort());
-        mCurrentType = Undefined;
-        mCurrentTypeByteCount = 0;
+    if (mConnectState == ReadingEnteredLobby)
+    {
+        emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
         mBuffer.clear();
 
         if (!isValid()) {
@@ -89,37 +86,21 @@ void ChatConnection::processReadyRead()
         mConnectState = ReadyForUse;
         emit readyForUse();
     }
-
-    // else if not knowing what to expect
-    // read till finished then process data
-    do {
-        if (mCurrentType == Undefined) {
-            if (!readProtocolHeader())
+    else
+    {
+        // else if not knowing what to expect
+        // read till finished then process data
+        do {
+            if (mCurrentType == Undefined) {
+                if (!readProtocolHeader())
+                    return;
+            }
+            if (!hasEnoughData())
                 return;
-        }
-        if (!hasEnoughData())
-            return;
-        processData();
-    } while (bytesAvailable() > 0);
-}
-
-void ChatConnection::sendPing()
-{
-    if (mPongTime.elapsed() > PongTimeout) {
-        abort();
-        return;
+            processData();
+        } while (bytesAvailable() > 0);
     }
 
-    write("<P> hello?");
-}
-
-
-void ChatConnection::sendEnteredLobbyMessage(QString entered_lobby_msg)
-{
-    QByteArray entered_lobby = entered_lobby_msg.toUtf8();
-    QByteArray message_w_header = "<E> " + QByteArray::number(entered_lobby.size()) + ' ' + entered_lobby;
-    if (write(message_w_header) == message_w_header.size())
-        mEnteredLobbyMessageSent = true;
 }
 
 int ChatConnection::readDataIntoBuffer(int maxSize)
@@ -142,10 +123,36 @@ int ChatConnection::readDataIntoBuffer(int maxSize)
 }
 
 
+void ChatConnection::sendPing()
+{
+    if (mPongTime.elapsed() > PongTimeout) {
+        abort();
+        return;
+    }
+
+    write("<P> hello?");
+}
+
+
+void ChatConnection::sendConnectionEstablished()
+{
+    QString username = mHostName.split("$$")[0];
+    QByteArray entered_lobby = username.toUtf8() + TerminationToken;
+    QByteArray message_w_header = "<E> " + QByteArray::number(entered_lobby.size()) + ' ' + entered_lobby;
+    write(message_w_header);
+}
+
+
+void ChatConnection::socketDisconnected()
+{
+    mPingTimer.stop();
+    emit userDisconnected();
+}
+
 int ChatConnection::dataLengthForCurrentDataType()
 {
     if (bytesAvailable() <= 0 || readDataIntoBuffer() <= 0
-            || !mBuffer.endsWith(SeparatorToken))
+            || mBuffer.endsWith(SeparatorToken))
         return 0;
 
     mBuffer.chop(1);
@@ -166,22 +173,22 @@ bool ChatConnection::readProtocolHeader()
         mTimerID = startTimer(TransferTimeout);
         return false;
     }
-
-    if (mBuffer == "<P> ") {
+    if (mBuffer.startsWith("<P> ")) {
         mCurrentType = VaporPing;
-    } else if (mBuffer == "<O> ") {
+    } else if (mBuffer.startsWith("<O> ")) {
         mCurrentType = VaporPong;
-    } else if (mBuffer == "<M> ") {
+    } else if (mBuffer.startsWith("<M> ")) {
         mCurrentType = LobbyMessage;
-    } else if (mBuffer == "<E> ") {
+    } else if (mBuffer.startsWith("<E> ")) {
         mCurrentType = HelloLobby;
-    } else if (mBuffer == "<I> ") {
+        return true;
+    } else if (mBuffer.startsWith("<I> ")) {
         mCurrentType = GameInvite;
-    } else if (mBuffer == "<D> ") {
+    } else if (mBuffer.startsWith("<D> ")) {
         mCurrentType = InviteDecline;
-    } else if (mBuffer == "<A> ") {
+    } else if (mBuffer.startsWith("<A> ")) {
         mCurrentType = InviteAccept;
-    } else if (mBuffer == "<G> ") {
+    } else if (mBuffer.startsWith("<G> ")) {
         mCurrentType = GoodByeLobby;
     }
     else {
@@ -226,13 +233,18 @@ void ChatConnection::processData()
 
     switch (mCurrentType) {
     case LobbyMessage:
-        emit newMessage(mHostName, QString::fromUtf8(mBuffer));
+        emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
         break;
     case VaporPing:
-        write("<O> I'm Here");
+        sendConnectionEstablished();
         break;
     case VaporPong:
-        mPongTime.restart();
+    {
+        write("<O> I'm Here");
+        break;
+    }
+    case HelloLobby:
+        emit newMessage(QString::fromUtf8(mBuffer), mCurrentType);
         break;
     default:
         break;
@@ -247,9 +259,7 @@ void ChatConnection::processData()
 ChatConnection::~ChatConnection()
 {
     mPingTimer.stop();
-    QObject::disconnect(this, SIGNAL(readyRead()), this, SLOT(processReadyRead()));
-    QObject::disconnect(this, SIGNAL(disconnected()), &mPingTimer, SLOT(stop()));
-    QObject::disconnect(&mPingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
-    QObject::disconnect(this, SIGNAL(connected()),
-                     this, SLOT(sendEnteredLobbyMessage()));
+    disconnect(this, SIGNAL(readyRead()), this, SLOT(processReadyRead()));
+    disconnect(this, SIGNAL(disconnected()), &mPingTimer, SLOT(stop()));
+    disconnect(&mPingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
 }

@@ -3,12 +3,14 @@
 #include "networkuser.h"
 #include "networklobby.h"
 #include <QQmlContext>
+#include <QQuickItem>
 LobbyManager::LobbyManager(QObject *parent, QQmlContext * context, QString username, bool use_NSD) :
     QObject(parent), mServer(new TCPServer(this))
 {
     mUserName = (username == "" ?  QHostInfo::localHostName():username); // or username if not an empty stringm
     qDebug() << mUserName;
     mContext = context;
+    mConnectedString = " connected to VaporChat Main Lobby.";
     if(use_NSD) // if system should use nsd
     {
         connect(&mLANPeerManager,SIGNAL(recordsChanged()),this,SLOT(lanUsersUpdated()));
@@ -17,15 +19,15 @@ LobbyManager::LobbyManager(QObject *parent, QQmlContext * context, QString usern
         connect(&mLANGameManager,SIGNAL(resolvedRecord(QHostInfo,int)),this,SLOT(gameLobbyResolved(QHostInfo,int)));
 
 
-        mLANPeerManager.setLocalName(mUserName);
+        mLANPeerManager.setLocalName(mUserName+ "$$" + QHostInfo::localHostName());
         mLANPeerManager.registerService("Vapor Arcade Chat","_vaporarcade_peer._tcp",mServer->serverPort());
         mLANPeerManager.browseService("_vaporarcade_peer._tcp");
-        mLANGameManager.browseService("_vaporarcade_gamelobby._tcp");
-
-        mContext->setContextProperty("LobbyManager",this);
-        mContext->setContextProperty("NSDUserList",QVariant::fromValue(mUserList));
-        mContext->setContextProperty("NSDGameLobbyList",QVariant::fromValue(mGameLobbyList));
+        mLANGameManager.browseService("_vaporarcade_gl._tcp");
+        mUserList.append(mUserName);
     }
+    mContext->setContextProperty("NSDUserList",QVariant::fromValue(mUserList));
+    mContext->setContextProperty("NSDGameLobbyList",QVariant::fromValue(mGameLobbyList));
+    mContext->setContextProperty("LobbyManager",this);
     connect(mServer,SIGNAL(newChatConnection(ChatConnection*)),this,SLOT(newConnection(ChatConnection*)));
     mMainLobby = new NetworkLobby(this,"MAIN",0);
 }
@@ -41,7 +43,34 @@ bool LobbyManager::awareOfUserAlready(QString user)
         if(user_v == user)
             return true;
     }
+    foreach(NetworkUser * nusr, mLANUsers)
+    {
+        if(nusr->getName() == user)
+            return true;
+    }
+
     return false;
+}
+
+
+ChatConnection * LobbyManager::alreadyWasConnected(ChatConnection *connection)
+{
+    ChatConnection* ret_val(0);
+    foreach( NetworkUser * user, mLANUsers)
+    {
+        if(user->getConnection()->name() == connection->name())
+        {
+           user->setConnection(connection);
+           ret_val = user->getConnection();
+           break;
+        }
+    }
+    return ret_val;
+}
+
+void LobbyManager::connectToQML(QQuickItem * root)
+{
+    mNetLobby = root->findChild<QQuickItem *>("NetLobby");
 }
 
 void LobbyManager::findUsersThatLeft(const QStringList &records)
@@ -57,6 +86,13 @@ void LobbyManager::findUsersThatLeft(const QStringList &records)
         if(!records_to_users.contains(rec_res))
             mCurrentRecordsResolving.removeOne(rec_res);
     }
+}
+
+
+void LobbyManager::createGameLobby( QString lobbyname)
+{
+    mLANGameManager.setLocalName(lobbyname);
+    mLANGameManager.registerService((lobbyname + "$$" + mUserName),"_vaporarcade_gl._tcp",mServer->serverPort());
 }
 
 
@@ -92,28 +128,37 @@ bool LobbyManager::hasConnection(const QHostAddress &senderIp, int senderPort) c
 
 void LobbyManager::newConnection(ChatConnection *connection)
 {
-    //connection->setGreetingMessage(peerManager->userName());
 
-   // connect(connection, SIGNAL(error(QAbstractSocket::SocketError)),
-  //          this, SLOT(connectionError(QAbstractSocket::SocketError)));
-  //  connect(connection, SIGNAL(disconnected()), this, SLOT(disconnected()));
-  //  connect(connection, SIGNAL(readyForUse()), this, SLOT(readyForUse()));
+    connect(connection, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(connectionError(QAbstractSocket::SocketError)));
+    connect(connection,SIGNAL(newMessage(QString,int)),this,SLOT(newMessage(QString,int)));
+    connect(connection, SIGNAL(userDisconnected()), this, SLOT(disconnected()));
+    if(!alreadyWasConnected(connection))
+    {
+        QString username = connection->name().split("$$")[0];
+        NetworkUser * netuser = new NetworkUser(this,username,connection);
+        mLANUsers.append(netuser);
+
+    }
 }
 
-void LobbyManager::readyForUse()
+void LobbyManager::newMessage(QString message, int type)
 {
-   // ChatConnection *connection = qobject_cast<ChatConnection *>(sender());
-   // if (!connection || hasConnection(connection->peerAddress(),
-  //                                   connection->peerPort()))
-  //      return;
+    QVariant returnedValue;
+    switch(type)
+    {
+        case ChatConnection::HelloLobby:
+        {
+            int last_space_i(message.lastIndexOf(' '));
+            QString username(message.mid(last_space_i,message.length()-1));
+            mUserList.append(username);
+            mContext->setContextProperty("NSDUserList",QVariant::fromValue(mUserList));
+            QMetaObject::invokeMethod(mNetLobby, "userConnected",
+                                      Q_RETURN_ARG(QVariant, returnedValue),
+                                      Q_ARG(QVariant, QVariant(username + ' ' + mConnectedString)));
+        }
 
-  //  connect(connection, SIGNAL(newMessage(QString,QString)),
-  //          this, SIGNAL(newMessage(QString,QString)));
-
- //   peers.insert(connection->peerAddress(), connection);
- //   QString nick = connection->name();
- //   if (!nick.isEmpty())
- //       emit newParticipant(nick);
+    }
 }
 
 void LobbyManager::disconnected()
@@ -125,8 +170,8 @@ void LobbyManager::disconnected()
 
 void LobbyManager::connectionError(QAbstractSocket::SocketError /* socketError */)
 {
-   // if (ChatConnection *connection = qobject_cast<ChatConnection *>(sender()))
-   //     removeConnection(connection);
+    if (ChatConnection *connection = qobject_cast<ChatConnection *>(sender()))
+        removeConnection(connection);
 }
 
 void LobbyManager::lanLobbysUpdated()
@@ -138,17 +183,22 @@ void LobbyManager::lanUsersUpdated()
 {
     QStringList records = mLANPeerManager.getServiceNames();
     findUsersThatLeft(records);
+    QString username;
     foreach(QString record,records)
     {
-        if(!awareOfUserAlready(record))
+        username = (serviceNameToUsername(record));
+        if(!awareOfUserAlready(username))
         {
-            mCurrentRecordsResolving.append(serviceNameToUsername(record));
+            mCurrentRecordsResolving.append(username);
         }
     }
-    if(mUserList.length() == 0 && records.length() > 0)
-        mLANPeerManager.resloveServiceAtIndex(0);
+    if(mCurrentRecordsResolving.length() > 0)
+    {
+        // only use if demanding immediate stop
+        //mLANPeerManager.forceStopResolving();
+        mLANPeerManager.resolveServciceByType("_vaporarcade_peer._tcp.",records.first());
+    }
 }
-
 
 
 
@@ -159,15 +209,10 @@ void LobbyManager::removeConnection(ChatConnection *connection)
        if(user->getConnection() == connection)
        {
            mLANUsers.removeOne(user);
+           user->deleteLater();
        }
    }
 
-   //     peers.remove(connection->peerAddress());
-   //     QString nick = connection->name();
-   //     if (!nick.isEmpty())
-  //          emit participantLeft(nick);
-   // }
-  //  connection->deleteLater();
 }
 
 
@@ -186,43 +231,32 @@ void LobbyManager::sendMessage(const QString &message)
     if (message.isEmpty())
         return;
 
-    //QList<ChatConnection *> connections = peers.values();
-    //foreach (ChatConnection *connection, connections)
-    //    connection->sendMessage(message);
 }
 
 
 QString LobbyManager::serviceNameToUsername(QString hostname)
 {
     QString username(hostname);
-    username = username.split(" on ")[0];
+    username = username.split("$$")[0];
     return username;
 }
 
 
 void LobbyManager::userRecordResolved(QHostInfo info, int port)
 {
-    QString user(mCurrentRecordsResolving.front());
+    QString user(mCurrentRecordsResolving.first());
     mCurrentRecordsResolving.pop_front();
-    mUserList.append(QVariant(user));
     mContext->setContextProperty("NSDUserList",QVariant::fromValue(mUserList));
-    if(user == mUserName)
+    QString username = user.split('$')[0];
+    qDebug() << username;
+    if(username != mUserName && info.addresses()[0] != mServer->serverAddress())
     {
-        //setHostInfo(info, port);
+        QHostAddress addr(info.addresses()[0]);
+        ChatConnection* ccon = new ChatConnection(this,user,info,port);
+        ccon->connectToHost(addr, port);
     }
-    else
-    {
-        NetworkUser * net_user = new NetworkUser(this,user,info,port);
-        mLANUsers.append(net_user);
-        ChatConnection* ccon = new ChatConnection(net_user,info.hostName());
-        net_user->setConnection(ccon);
-        emit newConnection(ccon);
-        mMainLobby->addUser(net_user);
-        ccon->connectToHost(info.addresses()[0], port);
-    }
-    // create a chat connection and a NetworkUser
-    // add the new user to mainLobby
-    // send announce message
+    if(mCurrentRecordsResolving.length() > 0)
+        mLANPeerManager.resolveSercviceWithTypeAndNameContains(mCurrentRecordsResolving.first(),"_vaporarcade_peer._tcp.");
 
 }
 

@@ -45,7 +45,7 @@ public slots:
     void registerService(QString service_name, QString service_type, int port);
     void browseService(QString servive_type);
     void unregisterService();
-
+    void forceStopResolving();
 };
 
 #endif // QNSDMANAGER_H
