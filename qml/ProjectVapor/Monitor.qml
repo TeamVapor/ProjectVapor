@@ -10,6 +10,8 @@ VaporRectangle {
     glowOpacity: 0.25
     glowZ: monitor.z - 50
     scalable: false
+    pressable: false
+    zScalable: false
 
     Keys.onPressed:
     {
@@ -43,5 +45,8 @@ VaporRectangle {
         settingsMenu.visible = true;
         settingsMenu.anchors.centerIn = monitor;
         zoomsurface.targetItem = settingsMenu;
+        settingsMenu.setDefaultFocus("app");
+        vaporNavigationBar.centerIn(settingsMenu);
+        vaporNavigationBar.settingsNavigationSetup();
     }
 }

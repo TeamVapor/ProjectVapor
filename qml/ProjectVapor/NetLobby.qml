@@ -10,14 +10,14 @@ VaporRectangle
     focus: false
     z: parent.z + 1
     color: base
+
     objectName: "NetLobby"
     property string lobbyName: ""
-    // message recieved from message system
+
     function submitMessage(message)
     {
         textContainer.text += (message + '\n');
     }
-
 
     function setDefaultFocus()
     {
@@ -273,14 +273,18 @@ VaporRectangle
                 onClicked:
                 {
                     navigationButtonContainer.backButtonPressed = false;
-                    netLobbyContainer.visible = false;
-                    zoomsurface.zoomOutToFull();
+                    netLobby.visible = false;
                     vaporInputDialog.setDialogMessage("Please enter a lobby name.");
-                    vaporInputDialog.show(bookshelf, lobbyName);
-                    //working on interfacing input dialog to return userdata
-                    vaporInputDialog.accepted.connect(openGameLobby);
+                    vaporInputDialog.show(monitor);
+                    zoomsurface.zoomToItemCentered(vaporInputDialog);
+                    vaporInputDialog.onAccepted.connect(startLobby);
                 }
 
+
+                function startLobby ()
+                {
+                    lobbyList.addLobby(vaporInputDialog.getUserInput());
+                }
             }
         }
 
@@ -328,15 +332,19 @@ VaporRectangle
         }
         else
         {
-            zoomsurface.zoomToItemTopRight(bookshelf);
-            //bookshelf.focus = true;
         }
     }
 
-
-    function openGameLobby()
+    onVisibleChanged:
     {
-        NSDServices.startGameLobby(lobbyName);
-    }
+        if (visible == false)
+        {
+            vaporNavigationBar.centerIn(zoomsurface);
+            vaporNavigationBar.homeScreenNavigationSetup();
+        }
+        else if (visible == true)
+        {
 
+        }
+    }
 }

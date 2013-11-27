@@ -17,6 +17,7 @@ Rectangle {
     property var gameLobby: undefined
     property var settingsMenu: undefined
     property var poster: undefined
+    property var controllerBin: undefined
     property var vaporMessageDialog: undefined
     property var vaporInputDialog: undefined
     property var vaporNavigationBar: undefined
@@ -104,8 +105,10 @@ Rectangle {
         gameLobby = ZoomSurface.addItem(zoomsurface, "GameLobby.qml", screenwidth, screenheight, 0, 0);
         gameLobby.z = 100;
         gameLobby.visible = false;
+        controllerBin = ZoomSurface.addItem(zoomsurface, "ControllerBin.qml", zoomsurface_width * 0.28, zoomsurface_height * 0.5, 0, zoomsurface_height * 0.5);
+        controllerBin.visible = true;
         settingsMenu = ZoomSurface.addItem(zoomsurface, "SettingsMenu.qml", screenwidth, screenheight, 0, 0);
-        settingsMenu.z = 100;screenwidth
+        settingsMenu.z = 100;
         settingsMenu.visible = false;
         poster = ZoomSurface.addItem(zoomsurface, "Poster.qml", zoomsurface_width*.25, zoomsurface_height* .4, zoomsurface_width * .01, zoomsurface_height * .01);
         poster.visible = true;
@@ -113,8 +116,8 @@ Rectangle {
         vaporMessageDialog.visible = false;
         vaporInputDialog = ZoomSurface.addItem(zoomsurface, "VaporInputDialog.qml", screenwidth * 0.35, screenheight * 0.3, screenwidth * 0.32, screenheight * 0.35);
         vaporInputDialog.visible = false;
-        vaporNavigationBar = ZoomSurface.addItem(zoomsurface, "VaporNavigationBar.qml", screenwidth, screenheight * 0.05, 0, screenheight * 0.95);
-        vaporNavigationBar.visible = false;
+        vaporNavigationBar = ZoomSurface.addItem(zoomsurface, "VaporNavigationBar.qml", zoomsurface_width, zoomsurface_height * 0.05, 0, zoomsurface_height * 0.95);
+        vaporNavigationBar.visible = true;
         emuLauncher.setEmulatorSystemDir(AppSettings.getEmulatorDirectory());
         emuLauncher.setRomsDir(AppSettings.getRomDirectory());
         zoomsurface.scaledOutValue = screenwidth/zoomsurface.width;

@@ -99,4 +99,9 @@ VaporRectangle
             }
         }
     }
+
+    function addLobby(name)
+    {
+        lobbyList.model.append(name);
+    }
 }

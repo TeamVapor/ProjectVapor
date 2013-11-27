@@ -12,8 +12,10 @@ VaporRectangle
     color: "transparent"
     pressable: false
 
+    signal inputAccepted
+
     property alias button: sendButton
-    property alias userInput: textInput.text
+    property alias inputText: textInput.text
 
     Keys.onReturnPressed:
     {
@@ -108,10 +110,23 @@ VaporRectangle
 
             onClicked:
             {
-                Handler.messageInput(AppSettings.getUserName(), textInput.text, textContainer);
-                LobbyManager.sendMessage(textInput.text);
+                if (sendButton.text == "Send")
+                {
+                    Handler.messageInput(AppSettings.getUserName(), textInput.text, textContainer);
+                    LobbyManager.sendMessage(textInput.text);
+                }
             }
         }
     }//end send button
+
+    function readInputText()
+    {
+        return textInput.text;
+    }
+
+    function clearInputText()
+    {
+        textInput.text = "";
+    }
 
 }

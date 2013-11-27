@@ -1,10 +1,20 @@
 <RCC>
     <qresource prefix="/images">
-        <file alias="bookshelfshelf.png">images/bookshelfshelf.png</file>
-        <file alias="desk.png">images/desk.png</file>
-        <file alias="dpad.png">images/dpad.png</file>
-        <file alias="monitor.png">images/monitor.png</file>
-        <file alias="router.png">images/router.png</file>
-        <file alias="wall_texture.jpg">images/wall_texture.jpg</file>
+	<file alias="bookshelfshelf.png">images/bookshelfshelf.png</file>
+	<file alias="desk.png">images/desk.png</file>
+	<file alias="dpad.png">images/dpad.png</file>
+	<file alias="monitor.png">images/monitor.png</file>
+	<file alias="router.png">images/router.png</file>
+	<file alias="wall_texture.jpg">images/wall_texture.jpg</file>
+	<file alias="right_button.png">images/right_button.png</file>
+	<file alias="red_button.png">images/red_button.png</file>
+	<file alias="left_button.png">images/left_button.png</file>
+	<file alias="green_button.png">images/green_button.png</file>
+	<file alias="down_button.png">images/down_button.png</file>
+	<file alias="blue_button.png">images/blue_button.png</file>
+	<file alias="start_select_button.png">images/start_select_button.png</file>
+	<file alias="up_button.png">images/up_button.png</file>
+	<file alias="yellow_button.png">images/yellow_button.png</file>
+	<file alias="controller_bin.png">images/controller_bin.png</file>
     </qresource>
 </RCC>

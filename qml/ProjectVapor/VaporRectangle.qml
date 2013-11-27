@@ -22,6 +22,7 @@ ZoomItem
     //enable/disable depending on object's usage
     property bool scalable: true
     property bool pressable: true
+    property bool zScalable: true
 
     //determines whether or not to display glow
     focus: false
@@ -31,6 +32,8 @@ ZoomItem
     property alias glowZ: vaporGlow.z
 
     signal isPressed
+
+    property bool selected: false
 
     RectangularGlow
     {
@@ -47,28 +50,6 @@ ZoomItem
         opacity: 0.7
     }
 
-    Keys.onPressed:
-    {
-        if (event.key == Qt.Key_Return)
-        {
-            if (vaporRect.pressable && !event.isAutoRepeat)
-            {
-                vaporRect.state = "pressed";
-            }
-            event.accepted = true;
-        }
-    }
-
-    Keys.onReleased:
-    {
-        if (event.key == Qt.Key_Return)
-        {
-            if (vaporRect.pressable)
-                vaporRect.state = "selected";
-            event.accepted = true;
-        }
-    }
-
     states:
     [
         State
@@ -79,36 +60,20 @@ ZoomItem
 
         State
         {
-            name: "selected"
+            name: "focused"
             when: focus == true
             PropertyChanges
             {
                 target: vaporRect
                 explicit: true
                 scale: scalable ? 1.05 : 1.00
-                x: vaporRect.x
-                z: vaporRect.z + 5
+                z: zScalable ? vaporRect.z + 5 :vaporRect.z
             }
             PropertyChanges
             {
                 target: vaporGlow
                 explicit: true
                 visible: true
-            }
-        },
-
-        State
-        {
-            name: "pressed"
-            PropertyChanges {
-                target: vaporGlow
-                explicit: true
-                glowRadius: 25
-                spread: 0.3
-                color: shadow
-                cornerRadius: vaporRect.radius + glowRadius
-                visible: true
-                opacity: 0.5
             }
         }
     ]
@@ -117,9 +82,10 @@ ZoomItem
     [
         Transition
         {
-            from: "*"; to: "selected"
+            from: "*"; to: "focused"
             ParallelAnimation
             {
+                alwaysRunToEnd: true
                 NumberAnimation { target: vaporRect; property: "scale"; from: 1.0; to: scalable ? 1.05 : 1.00; duration: 50; easing.type: Easing.InOutQuad }
                 NumberAnimation { target: vaporGlow; property: "opacity"; from: 0.0; to: 0.7; duration: 50; easing.type: Easing.InOutQuad }
                 NumberAnimation { target: vaporGlow; property: "spread"; from: 0.0; to: 1.0; duration: 50; easing.type: Easing.InOutQuad }
@@ -129,30 +95,13 @@ ZoomItem
 
         Transition
         {
-            from: "selected"; to: "*"
+            from: "focused"; to: "*"
             ParallelAnimation
             {
+                alwaysRunToEnd: true
                 NumberAnimation { target: vaporRect; property: "scale"; from: scalable ? 1.05 : 1.00; to: 1.0; duration: 50; easing.type: Easing.InOutQuad }
                 NumberAnimation { target: vaporGlow; property: "opacity"; from: 0.7; to: 0.0; duration: 50; easing.type: Easing.InOutQuad }
                 NumberAnimation { target: vaporGlow; property: "spread"; from: 0.2; to: 0.0; duration: 50; easing.type: Easing.InOutQuad }
-            }
-        },
-
-        Transition
-        {
-            from: "selected"; to: "pressed"
-            ParallelAnimation
-            {
-                //NumberAnimation { target: vaporGlow; property: "color"; from: light; to: shadow; duration: 50; easing.type: Easing.InOutQuad }
-            }
-        },
-
-        Transition
-        {
-            from: "pressed"; to: "selected"
-            ParallelAnimation
-            {
-              //  NumberAnimation { target: vaporGlow; property: "color"; from: shadow; to: light; duration: 50; easing.type: Easing.InOutQuad }
             }
         }
     ]

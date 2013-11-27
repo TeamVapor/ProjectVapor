@@ -16,11 +16,14 @@ VaporRectangle
     scalable: false
     pressable: false
 
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.horizontalCenter: parent.horizontalCenter
+
     signal accepted
 
-    property var lastFocus: null
+    property var curParent: null
     property string dialogMessage: "Enter a username."
-    property alias dialogInput: inputBox.userInput
+    property alias userInput: inputBox.inputText
 
     VaporRectangle
     {
@@ -66,8 +69,23 @@ VaporRectangle
             button.text: "OK"
             scalable: false
 
-            button.onClicked: vaporDialogContainer.hide();
+            button.onClicked:
+            {
+                vaporDialogContainer.hide();
+                inputBox.text = ""
+            }
         }
+    }
+
+  /*  //use x,y to position dialog
+    function centerIn (parent)
+    {
+
+    }
+*/
+    function getUserInput ()
+    {
+        return userInput;
     }
 
     function setDialogMessage (message)
@@ -80,11 +98,10 @@ VaporRectangle
         inputBox.focus = true;
     }
 
-    function show (parent, outputString)
+    function show (parent)
     {
         visible = true;
-        lastFocus = parent;
-        outputString = dialogInput;
+        curParent = parent;
         setDefaultFocus();
     }
 
@@ -92,8 +109,11 @@ VaporRectangle
     {
         visible = false;
         focus = false;
-        lastFocus.focus = true;
-        inputBox.userInput = dialogInput;
+        curParent.focus = true;
+        zoomsurface.zoomOutToFull();
+        userInput = inputBox.readInputText();
+        inputBox.clearInputText();
+        accepted();
     }
 }
 

@@ -12,6 +12,7 @@ VaporRectangle {
     glowOpacity: 0.25
     glowZ: -10000
     scalable: false
+    zScalable: false
 
     Keys.onPressed:
     {
@@ -39,5 +40,7 @@ VaporRectangle {
         netLobby.anchors.centerIn = router;
         netLobby.setDefaultFocus();
         zoomsurface.targetItem = netLobby;
+        vaporNavigationBar.centerIn(netLobby);
+        vaporNavigationBar.netLobbyNavigationSetup();
     }
 }

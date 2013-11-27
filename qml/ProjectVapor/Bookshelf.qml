@@ -14,6 +14,8 @@ VaporRectangle {
 
     glowZ: -50
     scalable: false
+    zScalable: false
+    pressable: false
 
     height: parent.height
     Column{
