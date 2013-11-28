@@ -27,7 +27,7 @@ VaporRectangle
         width: parent.width * 0.05
         anchors.left: parent.left
         color: alternateBase
-        focus: true;
+        focus: false
 
         scalable: false
         pressable: false
