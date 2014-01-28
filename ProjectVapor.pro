@@ -13,21 +13,28 @@ QML_IMPORT_PATH =
 
 TARGET = VaporArcade
 
+QT += core quick network
+
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    Bonjour/bonjourserviceresolver.cpp \
-    Bonjour/bonjourserviceregister.cpp \
-    Bonjour/bonjourservicebrowser.cpp \
-    Bonjour/qnsdmanager.cpp \
-    Bonjour/vaporarcadensd.cpp \
     Settings/applicationsettings.cpp \
     Emulator/EmulatorCore.cpp \
-    MessageServices/tcpserver.cpp \
-    MessageServices/networkuser.cpp \
-    MessageServices/networklobby.cpp \
-    MessageServices/lobbymanager.cpp \
-    MessageServices/chatconnection.cpp \
-    Emulator/EmulatorSettingsReader.cpp
+    Emulator/EmulatorSettingsReader.cpp \
+    vaporarcade.cpp \
+    Network/Chat/chatconnection.cpp \
+    Network/Chat/connectionmanager.cpp \
+    Network/Chat/tcpserver.cpp \
+    Network/Lobby/lobbymanager.cpp \
+    Network/Lobby/networklobby.cpp \
+    Network/Peer/networkuser.cpp \
+    Network/Peer/peermanager.cpp \
+    Network/Services/qnsdmanager.cpp \
+    Network/Services/vaporarcadensd.cpp \
+    Network/Services/Bonjour/bonjourservicebrowser.cpp \
+    Network/Services/Bonjour/bonjourserviceregister.cpp \
+    Network/Services/Bonjour/bonjourserviceresolver.cpp \
+    Network/networkservices.cpp \
+    Network/Chat/chatmessagefactory.cpp
 
 # Installation path
 # target.path =
@@ -44,26 +51,38 @@ OTHER_FILES += \
     qml/ProjectVapor/SettingsMenu.qml
 
 HEADERS += \
-    qnsdmanager.h \
-    Bonjour/bonjourserviceresolver.h \
-    Bonjour/bonjourserviceregister.h \
-    Bonjour/bonjourservicebrowser.h \
-    Bonjour/bonjourrecord.h \
-    Bonjour/qnsdmanager.h \
     Emulator/EmulatorLauncher.h \
-    Bonjour/vaporarcadensd.h \
     Settings/applicationsettings.h \
     Emulator/EmulatorCore.h \
-    MessageServices/tcpserver.h \
-    MessageServices/networkuser.h \
-    MessageServices/networklobby.h \
-    MessageServices/lobbymanager.h \
-    MessageServices/iuser.h \
-    MessageServices/ilobby.h \
-    MessageServices/chatconnection.h \
-    Emulator/EmulatorSettingsReader.h
+    Emulator/EmulatorSettingsReader.h \
+    vaporarcade.h \
+    Network/Chat/chatconnection.h \
+    Network/Chat/connectionmanager.h \
+    Network/Chat/tcpserver.h \
+    Network/Interfaces/ichatconnection.h \
+    Network/Interfaces/ilobby.h \
+    Network/Interfaces/iuser.h \
+    Network/Lobby/lobbymanager.h \
+    Network/Lobby/networklobby.h \
+    Network/Peer/networkuser.h \
+    Network/Peer/peermanager.h \
+    Network/Services/qnsdmanager.h \
+    Network/Services/vaporarcadensd.h \
+    Network/Services/Bonjour/bonjourrecord.h \
+    Network/Services/Bonjour/bonjourservicebrowser.h \
+    Network/Services/Bonjour/bonjourserviceregister.h \
+    Network/Services/Bonjour/bonjourserviceresolver.h \
+    Network/networkservices.h \
+    Network/Interfaces/iMessageFactory.h \
+    Network/Interfaces/iMessageParser.h \
+    Network/Chat/chatmessagefactory.h
 
 CONFIG += c++11
 
 
-LIBS+=-ldns_sd
+win32:LIBS += -L"E:\Program Files\Bonjour SDK" -ldnssd
+
+
+
+linux:LIBS+=-ldns_sd
+

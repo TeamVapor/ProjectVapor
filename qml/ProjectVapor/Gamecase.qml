@@ -1,4 +1,5 @@
 import QtQuick 2.0
+
 Component{
     id : wrapper
     VaporRectangle{
@@ -34,7 +35,7 @@ Component{
                 displayText.visible = false;
                 if(display != "")
                 {
-                    displayImage.source = AppSettings.getCoverDirectory() + display;
+                    displayImage.source = VaporArcade.getCoverDirectory() + display;
                     displayImage.visible = true;
                     gameCase.visible = true;
                     validIndexArray[validIndexArray.length] = index;
@@ -61,7 +62,7 @@ Component{
         {
             if(isGame && display != "")
             {
-                emuLauncher.start(system,game);
+                console.log(VaporArcade.AppSettings.InterfacesDirectory);
             }
         }
     }

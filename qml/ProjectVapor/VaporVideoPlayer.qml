@@ -10,7 +10,7 @@ VaporRectangle
     MediaPlayer
     {
         id: player
-        source: AppSettings.getVideoDirectory()+"/turtles1.webm"
+        source: VaporArcade.getVideoDirectory()+"/turtles1.webm"
         muted: true
         autoPlay: false
         property bool trailerPicker: false

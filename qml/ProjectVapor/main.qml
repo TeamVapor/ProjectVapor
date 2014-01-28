@@ -1,7 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Window 2.0
 import "ZoomableSurface.js" as ZoomSurface
-import com.vapor.project 1.0
+
 
 Rectangle {
     id: homeScreen
@@ -38,10 +38,7 @@ Rectangle {
         source: "qrc:/images/wall_texture.jpg"
     }
 
-    EmulatorLauncher
-    {
-        id:emuLauncher
-    }
+
 
     SIPKeyboard
     {
@@ -118,8 +115,8 @@ Rectangle {
         vaporInputDialog.visible = false;
         vaporNavigationBar = ZoomSurface.addItem(zoomsurface, "VaporNavigationBar.qml", zoomsurface_width, zoomsurface_height * 0.05, 0, zoomsurface_height * 0.95);
         vaporNavigationBar.visible = true;
-        emuLauncher.setEmulatorSystemDir(AppSettings.getEmulatorDirectory());
-        emuLauncher.setRomsDir(AppSettings.getRomDirectory());
+        //emuLauncher.setEmulatorSystemDir(AppSettings.getEmulatorDirectory());
+        //emuLauncher.setRomsDir(AppSettings.getRomDirectory());
         zoomsurface.scaledOutValue = screenwidth/zoomsurface.width;
         zoomsurface.zoomOutToFull();
     }

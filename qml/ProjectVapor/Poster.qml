@@ -19,7 +19,7 @@ VaporRectangle
         anchors.fill: posterContainer
         fillMode: Image.PreserveAspectFit
         focus: false
-        source: AppSettings.getPosterDirectory() +"/super_metroid.jpg"
+        source: VaporArcade.getPosterDirectory() +"/super_metroid.jpg"
         //Keys.onReturnPressed: emuLauncher.start();
     }
 

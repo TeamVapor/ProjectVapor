@@ -95,7 +95,7 @@ VaporRectangle
                 width: parent.width
                 height: parent.height
                 fillMode: Image.PreserveAspectFit
-                source: AppSettings.getCoverDirectory() +"/tmnt4_banner.png"
+                source: VaporArcade.getCoverDirectory() +"/tmnt4_banner.png"
             }
         }
     }//end game banner area

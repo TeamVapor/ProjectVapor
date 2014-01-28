@@ -20,6 +20,8 @@ qrc_*.cpp
 Makefile
 *-build-*
 
+#Apple IP
+dns_sd.h
 
 #QtCreator
 *.autosave

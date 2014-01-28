@@ -6,9 +6,10 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQmlComponent>
-#include "Bonjour/vaporarcadensd.h"
+#include "Network/Services/vaporarcadensd.h"
 #include "Settings/applicationsettings.h"
-#include "MessageServices/lobbymanager.h"
+#include "Network/Lobby/lobbymanager.h"
+#include "vaporarcade.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -31,12 +32,11 @@ int main(int argc, char *argv[])
     }
     viewer.rootContext()->setContextProperty("ScreenWidth", screen_width);
     viewer.rootContext()->setContextProperty("ScreenHeight",screen_height);
-    ApplicationSettings settings;
-    LobbyManager lman(&app, viewer.rootContext(), settings.getUserName(),settings.getUseNSD());
-    viewer.rootContext()->setContextProperty("AppSettings",&settings);
-    qmlRegisterType<EmulatorLauncher>("com.vapor.project", 1, 0, "EmulatorLauncher");
+    VaporArcade varcade;
+    //LobbyManager lman(&app);
+    viewer.rootContext()->setContextProperty("VaporArcade",&varcade);
+    //qmlRegisterType<VaporArcade>("com.vapor.project", 1, 0, "VaporArcade");
     viewer.setMainQmlFile(QStringLiteral("qml/ProjectVapor/main.qml"));
-    lman.connectToQML(viewer.rootObject());
     if(!showexpanded)
         viewer.showFullScreen();
     else

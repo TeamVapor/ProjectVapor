@@ -48,7 +48,7 @@ VaporRectangle
     ListView
     {
         id: userView
-        model: NSDUserList ? NSDUserList:0
+        //model: NSDUserList ? NSDUserList:0
         delegate: userDelegate
         anchors.fill: parent
         focus: false

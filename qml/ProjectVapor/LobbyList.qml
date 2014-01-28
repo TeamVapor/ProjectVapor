@@ -60,7 +60,7 @@ VaporRectangle
     ListView
     {
         id: lobbyList
-        model: NSDGameLobbyList
+        //model: NSDGameLobbyList
         delegate: lobbyDelegate
         anchors.fill: parent
         clip: true
