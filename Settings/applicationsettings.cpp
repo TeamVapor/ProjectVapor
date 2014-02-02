@@ -64,7 +64,7 @@ void ApplicationSettings::loadSettings(QDir& dir)
 {
     QFile settings(dir.absolutePath() + "/user.ini",this);
     settings.open(QIODevice::ReadOnly); // open and read in data
-    QStringList strlst(QString(settings.readAll()).split("\r\n"));
+    QStringList strlst(QString(settings.readAll()).split("\n"));
     settings.close();
     // for each setting value
     // get the whole line, split it on the '=',

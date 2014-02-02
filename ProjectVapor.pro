@@ -80,7 +80,7 @@ HEADERS += \
 CONFIG += c++11
 
 
-win32:LIBS += -L"E:\Program Files\Bonjour SDK" -ldnssd
+win32:LIBS += -L"C:\Program Files\Bonjour SDK" -ldnssd
 
 
 
